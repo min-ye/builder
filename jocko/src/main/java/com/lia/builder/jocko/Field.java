@@ -167,4 +167,9 @@ public class Field extends CommonObject{
       obj[4] = this._key;
       return obj;
    }
+
+   @Override
+   public String fetchDescription() {
+      return String.format("%s(type: %s; size: %d; primary: %s)", this._propertyName, this._type.toString(), this._size, String.valueOf(this._primary) );
+   }
 }

@@ -29,7 +29,7 @@
             <configuration>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.lia.lego.bee.Console</mainClass>
+                  <mainClass>com.lia.builder.jocko.Console</mainClass>
                 </transformer>
               </transformers>
             </configuration>

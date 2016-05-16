@@ -12,9 +12,21 @@ public class UpdateEntityHandler extends InputHandler{
       
       if (index != -1){
          CommonObject object = input.get(index);
-         String propertyName = selectProperty(object, c);
-         String propertyValue = getPropertyValue(propertyName, c);
-         object.setValue(propertyName, propertyValue);
+         boolean quit = false;
+         while (!quit){
+            c.write(object.fetchDescription());
+            String propertyName = selectProperty(object, c);
+            if (propertyName.equals("0") || propertyName.length() == 0) {
+               quit = true;
+            }
+            else{
+               String originValue = object.getPropertyValue(propertyName);
+               String propertyValue = getPropertyValue(propertyName + "[" + originValue + "]", c);
+               if (propertyValue.length() > 0) {
+                  object.setValue(propertyName, propertyValue);
+               }
+            }
+         }
       }
       else {
          c.write(String.format("No entity exist.[%d]", index));

@@ -150,4 +150,9 @@ public class Entity extends CommonObject{
       return obj;
    }
 
+   @Override
+   public String fetchDescription() {
+      return this._className + "(" + this._packageName + ")";
+   }
+
 }

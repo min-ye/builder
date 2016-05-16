@@ -12,7 +12,7 @@ public abstract class InputHandler {
       int index = -1;
       showEntityList(objectList, c);
       boolean findEntity = false;
-      String prompt = "Entity Key: \n";
+      String prompt = "Entity Key:";
       while (findEntity == false) {
          String input = c.read(prompt);
          
@@ -35,18 +35,20 @@ public abstract class InputHandler {
    protected String selectProperty(CommonObject obj, IInvokeConsole c) throws IOException{
       String output = "";
       showPropertyNameList(obj, c);
-      boolean findEntity = false;
-      String prompt = "Entity Property Name: \n";
-      while (findEntity == false) {
+      c.write("0: quit;");
+      boolean findProperty = false;
+      String prompt = "Entity Property Name:";
+      while (findProperty == false) {
          String name = c.read(prompt);
-         if (name == "0" || name == "") {
-            output = null;
-            findEntity = true;
+         if (name.equals("0") || name.length() == 0) {
+            output = "0";
+            findProperty = true;
          }
          else{
             for (String propertyName : obj.fetchPropertyName()){
-               if (propertyName == name){
-                  findEntity = true;
+               c.write(propertyName);
+               if (propertyName.equals(name)){
+                  findProperty = true;
                   output = propertyName;
                }
             }
@@ -65,15 +67,15 @@ public abstract class InputHandler {
       for(CommonObject obj : objectList){
          index = objectList.indexOf(obj);
          
-         c.write(String.format("%d\t%s\n", 
+         c.write(String.format("%d\t%s", 
                   index,
-                  obj.toString()));
+                  obj.fetchDescription()));
       }
    }
    
    private void showPropertyNameList(CommonObject obj, IInvokeConsole c) throws IOException{
       for (String name : obj.fetchPropertyName()) {
-         c.write(String.format("%s\n", name));
+         c.write(String.format("%s", name));
       }
    }
    

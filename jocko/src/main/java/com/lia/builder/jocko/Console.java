@@ -31,10 +31,10 @@ public class Console {
          initializeEntityList();
          String choice = "";
          while (!choice.equals("0")){
-            writeConsole("1. Input;\n");
-            writeConsole("2. Output:\n");
-            writeConsole("0. Quit;\n");
-            choice = readConsole("Choice: \n");
+            writeConsole("1. Input;");
+            writeConsole("2. Output:");
+            writeConsole("0. Quit;");
+            choice = readConsole("Choice:");
             switch(choice){
             case "1":
                handleInput();
@@ -61,30 +61,34 @@ public class Console {
       };
       
       String choice = "";
+      String className = "";
       
       while (!choice.equals("0")){
-         writeConsole("1. Delete Entity;\n");
-         writeConsole("2. Update Entity;\n");
-         writeConsole("3. Create Entity;\n");
-         writeConsole("6. Update Property:\n");
-         writeConsole("7. Create Property:\n");
-         writeConsole("9. Save:\n");
-         writeConsole("0. Quit;\n");
-         choice = readConsole("Choice: \n");
+         writeConsole("1. Delete Entity;");
+         writeConsole("2. Update Entity;");
+         writeConsole("3. Create Entity;");
+         writeConsole("6. Update Property:");
+         writeConsole("7. Create Property:");
+         writeConsole("9. Save:");
+         writeConsole("0. Quit;");
+         choice = readConsole("Choice: ");
          
          switch(choice){
          case "1":{
-            InputHandler handler = new DeleteEntityHandler();
+            className = "DeleteEntityHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(DeleteEntityHandler.class);
             handler.run(_entityList, iic);
             break;
          }
          case "2": {
-            InputHandler handler = new UpdateEntityHandler();
+            className = "UpdateEntityHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(UpdateEntityHandler.class);
             handler.run(_entityList, iic);
             break;
          }
          case "3": {
-            InputHandler handler = new CreateEntityHandler();
+            className = "CreateEntityHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
             handler.run(_entityList, iic);
             break;
          }
@@ -98,6 +102,7 @@ public class Console {
             save();
             break;
          }
+         
       }
    }
 

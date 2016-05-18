@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import com.lia.common.CommonObject;
 import com.lia.common.JsonHelper;
 import com.lia.common.Profile;
+import com.lia.common.exception.CancelInputException;
 
 public class Console {
    private static java.io.Console c = System.console();
@@ -23,18 +24,17 @@ public class Console {
    private static String _entityJsonFileName = "";
    private static boolean ide = true;
 
-   public static void main(String[] arg){
-      
+   public static void main(String[] arg) throws IOException{
       try{
          String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
          _entityJsonFileName = String.format("%sentity.json", folder);
          initializeEntityList();
          String choice = "";
          while (!choice.equals("0")){
-            writeConsole("1. Input;");
-            writeConsole("2. Output:");
-            writeConsole("0. Quit;");
-            choice = readConsole("Choice:");
+            writeLine("1. Input;");
+            writeLine("2. Output:");
+            writeLine("0. Quit;");
+            choice = readLine("Choice:");
             switch(choice){
             case "1":
                handleInput();
@@ -44,19 +44,22 @@ public class Console {
             }
          }
       }
+      catch (CancelInputException ex){
+         System.exit(0);
+      }
       catch (Exception ex){
-         writeConsole(ex.getMessage());
+         writeLine(ex.getMessage());
       }
    }
    
    private static void handleInput() throws Exception{
       IInvokeConsole iic = new IInvokeConsole(){
-         public String read(String prompt) throws IOException{
-            return readConsole(prompt);
+         public String read(String prompt) throws CancelInputException, IOException{
+            return readLine(prompt);
          }
          
          public void write(String prompt){
-            writeConsole(prompt);
+            writeLine(prompt);
          }
       };
       
@@ -64,39 +67,52 @@ public class Console {
       String className = "";
       
       while (!choice.equals("0")){
-         writeConsole("1. Delete Entity;");
-         writeConsole("2. Update Entity;");
-         writeConsole("3. Create Entity;");
-         writeConsole("6. Update Property:");
-         writeConsole("7. Create Property:");
-         writeConsole("9. Save:");
-         writeConsole("0. Quit;");
-         choice = readConsole("Choice: ");
+         writeLine("1. Delete Entity;");
+         writeLine("2. Update Entity;");
+         writeLine("3. Create Entity;");
+         writeLine("5. Delete Property:");
+         writeLine("6. Update Property:");
+         writeLine("7. Create Property:");
+         writeLine("9. Save:");
+         writeLine("0. Quit;");
+         choice = readLine("Choice: ");
          
          switch(choice){
          case "1":{
             className = "DeleteEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(DeleteEntityHandler.class);
             handler.run(_entityList, iic);
+         } 
             break;
-         }
          case "2": {
             className = "UpdateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(UpdateEntityHandler.class);
             handler.run(_entityList, iic);
-            break;
          }
+            break;
          case "3": {
             className = "CreateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
             handler.run(_entityList, iic);
-            break;
          }
-         case "5":
             break;
-         case "6":
+         case "5": {
+            className = "DeleteFieldHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(DeleteFieldHandler.class);
+            handler.run(_entityList, iic);
+         }
             break;
-         case "7":
+         case "6": {
+            className = "CreateEntityHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
+            handler.run(_entityList, iic);
+         }
+            break;
+         case "7": {
+            className = "CreateEntityHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
+            handler.run(_entityList, iic);
+         }
             break;
          case "9":
             save();
@@ -122,23 +138,50 @@ public class Console {
       }
    }
    
-   private static String readConsole(String prompt) throws IOException{
-      if (ide){
-         System.out.println(prompt);
-         return b.readLine();
+   private static String readLine(String prompt) throws IOException, CancelInputException{
+      StringBuffer result = new StringBuffer("");
+      int c;  
+      c = System.in.read();  
+      System.out.println(String.format("%d", c));
+      boolean complete = false;
+      while(!complete)  
+      {
+         switch (c){
+         case 10:
+            complete = true;
+            break;
+         case 27:
+            throw new CancelInputException();
+         default:
+            result.append((char)c);
+            c = System.in.read();
+         }
       }
-      else {
-         return c.readLine(prompt);
-      }
+      return result.toString();
    }
    
-   private static void writeConsole(String message) {
+   private static void writeLine(String message) {
       if (ide){
          System.out.println(message);
       }
       else {
          c.printf(message);
       }
+   }
+   
+   private static String choose(Map<String, String> option) throws Exception{
+      boolean choosed = false;
+      String result = "";
+      while (!choosed){
+         for (Map.Entry<String, String> entry : option.entrySet()) {
+            writeLine(String.format("%s: %s", entry.getKey(), entry.getValue()));
+         }
+         result = readLine("Please choose:");
+         if (option.containsKey(result)) {
+            choosed = true;
+         }
+      }
+      return result;
    }
    
    private static void initializeEntityList() {

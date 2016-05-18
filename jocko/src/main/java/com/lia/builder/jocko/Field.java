@@ -15,8 +15,9 @@ public class Field extends CommonObject{
    private DataType _type = DataType.String;
    private int _size = 0;
    private boolean _primary = false;
+   private boolean _allowNull = true;
    private UUID _key = java.util.UUID.fromString("");
-   
+     
    public String getPropertyName() {
       return _propertyName;
    }
@@ -48,6 +49,14 @@ public class Field extends CommonObject{
    public void setPrimary(boolean primary) {
       this._primary = primary;
    }
+   
+   public boolean getAllowNull() {
+      return _allowNull;
+   }
+   
+   public void setAllowNull(boolean allowNull) {
+      this._allowNull = allowNull;
+   }
 
    public UUID getKey() {
       return _key;
@@ -73,6 +82,8 @@ public class Field extends CommonObject{
          return Integer.toString(this._size);
       case "Primary":
          return Boolean.toString(_primary);
+      case "AllowNull":
+         return Boolean.toString(_allowNull);
       case "Key":
          return this._key.toString();
       default:
@@ -94,6 +105,9 @@ public class Field extends CommonObject{
          break;
       case "Primary":
          this._primary = Boolean.parseBoolean(propertyValue);
+         break;
+      case "AllowNull":
+         this._allowNull = Boolean.parseBoolean(propertyValue);
          break;
       case "Key":
          if (propertyValue.length() > 0)
@@ -120,6 +134,7 @@ public class Field extends CommonObject{
       modelMap.put("Type", this._type.toString());
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
+      modelMap.put("AllowNull", Boolean.toString(this._allowNull));
       modelMap.put("Key", this._key.toString());
 
       return modelMap;
@@ -141,6 +156,7 @@ public class Field extends CommonObject{
       modelMap.put("Type", this._type.toString());
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
+      modelMap.put("AllowNull", Boolean.toString(this._allowNull));
 
       return modelMap;
    }
@@ -153,6 +169,7 @@ public class Field extends CommonObject{
       fieldNameList.add("Type");
       fieldNameList.add("Size");
       fieldNameList.add("Primary");
+      fieldNameList.add("AllowNull");
       fieldNameList.add("Key");
       return fieldNameList;
    }
@@ -164,7 +181,8 @@ public class Field extends CommonObject{
       obj[1] = this._type;
       obj[2] = this._size;
       obj[3] = this._primary;
-      obj[4] = this._key;
+      obj[4] = this._allowNull;
+      obj[5] = this._key;
       return obj;
    }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.lia.common.CommonObject;
+import com.lia.common.exception.CancelInputException;
 
 public abstract class InputHandler {
    public abstract void run(List<CommonObject> objectList, IInvokeConsole c) throws Exception;
@@ -32,7 +33,7 @@ public abstract class InputHandler {
       return index;
    }
    
-   protected String selectProperty(CommonObject obj, IInvokeConsole c) throws IOException{
+   protected String selectProperty(CommonObject obj, IInvokeConsole c) throws IOException, CancelInputException{
       String output = "";
       showPropertyNameList(obj, c);
       c.write("0: quit;");
@@ -57,7 +58,7 @@ public abstract class InputHandler {
       return output;
    }
    
-   protected String getPropertyValue(String propertyName, IInvokeConsole c) throws IOException{
+   protected String getPropertyValue(String propertyName, IInvokeConsole c) throws IOException, CancelInputException{
       return c.read(String.format("Please input the value of %s:", propertyName));
    }
    

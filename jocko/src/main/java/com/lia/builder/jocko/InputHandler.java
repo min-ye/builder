@@ -1,7 +1,9 @@
 package com.lia.builder.jocko;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.lia.common.CommonObject;
 import com.lia.common.exception.CancelInputException;
@@ -10,8 +12,11 @@ public abstract class InputHandler {
    public abstract void run(List<CommonObject> objectList, IInvokeConsole c) throws Exception;
    
    protected int selectObject(List<CommonObject> objectList, IInvokeConsole c) throws Exception{
-      int index = -1;
-      showEntityList(objectList, c);
+      //int index = -1;
+      Map<Integer, CommonObject> objectOption = buildCommonObjectOption(objectList);
+      Integer index = c.chooseObject(objectOption);
+      return index;
+      /*showEntityList(objectList, c);
       boolean findEntity = false;
       String prompt = "Entity Key:";
       while (findEntity == false) {
@@ -30,11 +35,13 @@ public abstract class InputHandler {
             }
          }
       }
-      return index;
+      return index;*/
    }
    
    protected String selectProperty(CommonObject obj, IInvokeConsole c) throws IOException, CancelInputException{
-      String output = "";
+      Map<Integer, String> option = buildPropertyOption(obj);
+      return option.get(c.choose(option));
+      /*String output = "";
       showPropertyNameList(obj, c);
       c.write("0: quit;");
       boolean findProperty = false;
@@ -55,29 +62,33 @@ public abstract class InputHandler {
             }
          }
       }
-      return output;
+      return output;*/
    }
    
    protected String getPropertyValue(String propertyName, IInvokeConsole c) throws IOException, CancelInputException{
       return c.read(String.format("Please input the value of %s:", propertyName));
    }
    
-   private void showEntityList(List<CommonObject> objectList, IInvokeConsole c) throws Exception{
+   private Map<Integer, CommonObject> buildCommonObjectOption(List<CommonObject> objectList) {
       //List<CommonObject> entityList = getEntityList();
+      Map<Integer, CommonObject> option = new HashMap<Integer, CommonObject>();
       int index = 0;
       for(CommonObject obj : objectList){
          index = objectList.indexOf(obj);
+         option.put(index, obj);
          
-         c.write(String.format("%d\t%s", 
-                  index,
-                  obj.fetchDescription()));
       }
+      return option;
    }
    
-   private void showPropertyNameList(CommonObject obj, IInvokeConsole c) throws IOException{
+   private Map<Integer, String> buildPropertyOption(CommonObject obj) {
+      Map<Integer, String> option = new HashMap<Integer, String>();
+      int index = 0;
       for (String name : obj.fetchPropertyName()) {
-         c.write(String.format("%s", name));
+         index ++;
+         option.put(index, name);
       }
+      return option;
    }
    
    protected boolean compare(CommonObject obj1, CommonObject obj2, String fieldName) throws Exception{

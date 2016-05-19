@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 
@@ -23,26 +25,27 @@ public class Console {
    private static List<CommonObject> _propertyList = null;
    private static String _entityJsonFileName = "";
    private static boolean ide = true;
+   private static String _quitIdent = "!";
 
    public static void main(String[] arg) throws IOException{
       try{
          String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
          _entityJsonFileName = String.format("%sentity.json", folder);
          initializeEntityList();
-         String choice = "";
-         while (!choice.equals("0")){
-            writeLine("1. Input;");
-            writeLine("2. Output:");
-            writeLine("0. Quit;");
-            choice = readLine("Choice:");
+         int choice = -1;
+         Map<Integer, String> option = new HashMap<Integer, String>();
+         option.put(1, "Input");
+         option.put(2, "Output");
+         do {
+            choice = choose(option);
             switch(choice){
-            case "1":
+            case 1:
                handleInput();
                break;
-            case "2":
+            case 2:
                break;
             }
-         }
+         } while (choice != 0);
       }
       catch (CancelInputException ex){
          System.exit(0);
@@ -61,65 +64,78 @@ public class Console {
          public void write(String prompt){
             writeLine(prompt);
          }
+         
+         public void write(List<String> message) {
+            writeLine(message);
+         }
+         
+         public Integer choose(Map<Integer, String> option) {
+            return choose(option);
+         }
+         
+         public Integer chooseObject(Map<Integer, CommonObject> option) {
+            return chooseObject(option);
+         }
       };
       
-      String choice = "";
+      Integer choice = -1;
       String className = "";
       
-      while (!choice.equals("0")){
-         writeLine("1. Delete Entity;");
-         writeLine("2. Update Entity;");
-         writeLine("3. Create Entity;");
-         writeLine("5. Delete Property:");
-         writeLine("6. Update Property:");
-         writeLine("7. Create Property:");
-         writeLine("9. Save:");
-         writeLine("0. Quit;");
-         choice = readLine("Choice: ");
+      Map<Integer, String> option = new HashMap<Integer, String>();
+      option.put(1, "Delete Entity");
+      option.put(2, "Update Entity");
+      option.put(3, "Create Entity");
+      option.put(5, "Delete Property");
+      option.put(6, "Update Property");
+      option.put(7, "Create Property");
+      option.put(9, "Save");
+      
+      do {
+         choice = choose(option);
          
          switch(choice){
-         case "1":{
+         case 1:{
             className = "DeleteEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(DeleteEntityHandler.class);
             handler.run(_entityList, iic);
          } 
             break;
-         case "2": {
+         case 2: {
             className = "UpdateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(UpdateEntityHandler.class);
             handler.run(_entityList, iic);
          }
             break;
-         case "3": {
+         case 3: {
             className = "CreateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
             handler.run(_entityList, iic);
          }
             break;
-         case "5": {
+         case 5: {
             className = "DeleteFieldHandler";
             InputHandler handler = InputHandlerFactory.createHandler(DeleteFieldHandler.class);
             handler.run(_entityList, iic);
          }
             break;
-         case "6": {
+         case 6: {
             className = "CreateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
             handler.run(_entityList, iic);
          }
             break;
-         case "7": {
+         case 7: {
             className = "CreateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
             handler.run(_entityList, iic);
          }
             break;
-         case "9":
+         case 9:
             save();
             break;
          }
          
-      }
+      } while (choice != 0);
    }
 
    private void handleOutput(){
@@ -139,25 +155,22 @@ public class Console {
    }
    
    private static String readLine(String prompt) throws IOException, CancelInputException{
-      StringBuffer result = new StringBuffer("");
-      int c;  
-      c = System.in.read();  
-      System.out.println(String.format("%d", c));
-      boolean complete = false;
-      while(!complete)  
-      {
-         switch (c){
-         case 10:
-            complete = true;
-            break;
-         case 27:
-            throw new CancelInputException();
-         default:
-            result.append((char)c);
-            c = System.in.read();
+      String input = "";
+      if (ide){
+         System.out.println(prompt);
+         input = b.readLine();
+         if (input.length() == 0){
+            System.out.print("Are you want to exit? (Y/N):");
+            input = b.readLine();
+            if (b.toString() == "Y") {
+               throw new CancelInputException();
+            }
          }
       }
-      return result.toString();
+      else {
+         input = c.readLine(prompt);
+      }
+      return input;
    }
    
    private static void writeLine(String message) {
@@ -169,19 +182,76 @@ public class Console {
       }
    }
    
-   private static String choose(Map<String, String> option) throws Exception{
-      boolean choosed = false;
-      String result = "";
-      while (!choosed){
-         for (Map.Entry<String, String> entry : option.entrySet()) {
-            writeLine(String.format("%s: %s", entry.getKey(), entry.getValue()));
+   private static void writeLine(List<String> message) {
+      if (ide){
+         System.out.println("--------------------------------------------------");
+      }
+      else {
+         c.printf("------------------------------------------------");
+      }
+      for (String m : message) {
+         if (ide){
+            System.out.println(m);
          }
-         result = readLine("Please choose:");
-         if (option.containsKey(result)) {
-            choosed = true;
+         else {
+            c.printf(m);
          }
       }
-      return result;
+   }
+   
+   private static int choose(Map<Integer, String> option) throws Exception{
+      writeLine("--------------------------------------------------");
+      boolean choosed = false;
+      String result = "";
+      Integer index = -1;
+      while (!choosed){
+         for (Map.Entry<Integer, String> entry : option.entrySet()) {
+            writeLine(String.format("%d: %s;", entry.getKey(), entry.getValue()));
+         }
+         writeLine(String.format("%s: quit;", _quitIdent));
+         writeLine("--------------------------------------------------");
+         result = readLine("Please choose:");
+         
+         try{
+            index = Integer.getInteger(result);
+            if (option.containsKey(index)) {
+               choosed = true;
+            }
+         }
+         catch (Exception ex) {
+            writeLine(ex.getMessage());
+            choosed = false;
+         }
+      }
+      return index;
+   }
+   
+   private static int chooseObject(Map<Integer, CommonObject> option) throws Exception{
+      writeLine("--------------------------------------------------");
+      boolean choosed = false;
+      String result = "";
+      Integer index = -1;
+      while (!choosed){
+         for (Entry<Integer, CommonObject> entry : option.entrySet()) {
+            writeLine(String.format("%d: %s;", entry.getKey(), entry.getValue().fetchDescription()));
+         }
+         writeLine(String.format("%s: quit;", _quitIdent));
+         writeLine("--------------------------------------------------");
+         result = readLine("Please choose:");
+         
+         try{
+            index = Integer.getInteger(result);
+            if (option.containsKey(result)) {
+               choosed = true;
+            }
+         }
+         catch (Exception ex) {
+            writeLine(ex.getMessage());
+            choosed = false;
+         }
+         
+      }
+      return index;
    }
    
    private static void initializeEntityList() {

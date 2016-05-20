@@ -1,1 +1,11 @@
-/target/
+.DS_Store
+*.swp
+.git
+RemoteSystemsTempFiles
+raw
+target
+.metadata
+.recommenders
+raw.old
+data
+

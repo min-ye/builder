@@ -36,14 +36,17 @@ public class Console {
          Map<Integer, String> option = new HashMap<Integer, String>();
          option.put(1, "Input");
          option.put(2, "Output");
+         option.put(3, "Browse");
          do {
-            choice = choose(option);
+            choice = readStringChoose(option);
             switch(choice){
             case 1:
                handleInput();
                break;
             case 2:
                break;
+            case 3:
+               handleBrowse();
             }
          } while (choice != 0);
       }
@@ -57,24 +60,24 @@ public class Console {
    
    private static void handleInput() throws Exception{
       IInvokeConsole iic = new IInvokeConsole(){
-         public String read(String prompt) throws CancelInputException, IOException{
+         public String read(String prompt) throws Exception{
             return readLine(prompt);
          }
          
-         public void write(String prompt){
+         public void write(String prompt) throws Exception{
             writeLine(prompt);
          }
          
-         public void write(List<String> message) {
+         public void write(List<String> message) throws Exception{
             writeLine(message);
          }
          
-         public Integer choose(Map<Integer, String> option) {
-            return choose(option);
+         public Integer chooseString(Map<Integer, String> option) throws Exception {
+            return readStringChoose(option);
          }
          
-         public Integer chooseObject(Map<Integer, CommonObject> option) {
-            return chooseObject(option);
+         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
+            return readObjectChoose(option);
          }
       };
       
@@ -82,6 +85,7 @@ public class Console {
       String className = "";
       
       Map<Integer, String> option = new HashMap<Integer, String>();
+      
       option.put(1, "Delete Entity");
       option.put(2, "Update Entity");
       option.put(3, "Create Entity");
@@ -91,7 +95,7 @@ public class Console {
       option.put(9, "Save");
       
       do {
-         choice = choose(option);
+         choice = readStringChoose(option);
          
          switch(choice){
          case 1:{
@@ -134,7 +138,57 @@ public class Console {
             save();
             break;
          }
+      } while (choice != 0);
+   }
+   
+   private static void handleBrowse() throws Exception{
+      IInvokeConsole iic = new IInvokeConsole(){
+         public String read(String prompt) throws Exception{
+            return readLine(prompt);
+         }
          
+         public void write(String prompt) throws Exception{
+            writeLine(prompt);
+         }
+         
+         public void write(List<String> message) throws Exception{
+            writeLine(message);
+         }
+         
+         public Integer chooseString(Map<Integer, String> option) throws Exception {
+            return readStringChoose(option);
+         }
+         
+         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
+            return readObjectChoose(option);
+         }
+      };
+      
+      Integer choice = -1;
+      String className = "";
+      
+      Map<Integer, String> option = new HashMap<Integer, String>();
+      
+      option.put(1, "Browse Entity");      
+      option.put(2, "Browse Property");
+      
+      do {
+         choice = readStringChoose(option);
+         
+         switch(choice){
+         case 1:{
+            className = "BrowseHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
+            handler.run(_entityList, iic);
+         } 
+            break;
+         case 2:{
+            className = "BrowseHandler";
+            InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
+            handler.run(_propertyList, iic);
+         } 
+            break;     
+         }
       } while (choice != 0);
    }
 
@@ -169,6 +223,13 @@ public class Console {
       }
       else {
          input = c.readLine(prompt);
+         if (input.length() == 0){
+            System.out.print("Are you want to exit? (Y/N):");
+            input = b.readLine();
+            if (b.toString() == "Y") {
+               throw new CancelInputException();
+            }
+         }
       }
       return input;
    }
@@ -199,7 +260,7 @@ public class Console {
       }
    }
    
-   private static int choose(Map<Integer, String> option) throws Exception{
+   private static int readStringChoose(Map<Integer, String> option) throws Exception{
       writeLine("--------------------------------------------------");
       boolean choosed = false;
       String result = "";
@@ -213,9 +274,18 @@ public class Console {
          result = readLine("Please choose:");
          
          try{
-            index = Integer.getInteger(result);
-            if (option.containsKey(index)) {
-               choosed = true;
+            if (result.length() == 0) {
+               System.out.print("Are you want to exit? (Y/N):");
+               result = b.readLine();
+               if (b.toString() == "Y") {
+                  throw new CancelInputException();
+               }
+            }
+            else {
+               index = Integer.parseInt(result);
+               if (option.containsKey(index)) {
+                  choosed = true;
+               }
             }
          }
          catch (Exception ex) {
@@ -226,7 +296,7 @@ public class Console {
       return index;
    }
    
-   private static int chooseObject(Map<Integer, CommonObject> option) throws Exception{
+   private static int readObjectChoose(Map<Integer, CommonObject> option) throws Exception{
       writeLine("--------------------------------------------------");
       boolean choosed = false;
       String result = "";
@@ -240,9 +310,18 @@ public class Console {
          result = readLine("Please choose:");
          
          try{
-            index = Integer.getInteger(result);
-            if (option.containsKey(result)) {
-               choosed = true;
+            if (result.length() == 0){
+               System.out.print("Are you want to exit? (Y/N):");
+               result = b.readLine();
+               if (b.toString() == "Y") {
+                  throw new CancelInputException();
+               }
+            }
+            else {
+               index = Integer.getInteger(result);
+               if (option.containsKey(result)) {
+                  choosed = true;
+               }
             }
          }
          catch (Exception ex) {

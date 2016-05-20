@@ -8,13 +8,13 @@ import com.lia.common.CommonObject;
 import com.lia.common.exception.CancelInputException;
 
 public interface IInvokeConsole {
-   public String read(String prompt) throws IOException, CancelInputException;  
+   public String read(String prompt) throws Exception;  
    
-   public void write(String message) throws IOException;
+   public void write(String message) throws Exception;
    
-   public Integer choose(Map<Integer, String> option);
+   public Integer chooseString(Map<Integer, String> option) throws Exception;
    
-   public Integer chooseObject(Map<Integer, CommonObject> option);
+   public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception;
    
-   public void write(List<String> message);
+   public void write(List<String> message) throws Exception;
 }

@@ -11,26 +11,48 @@ import com.lia.common.CommonObject;
 import java.util.UUID;
 
 public class Field extends CommonObject{
-   private String _propertyName = "";
-   private DataType _type = DataType.String;
+   private String _fieldName = "";
+   private String _type = "";
    private int _size = 0;
    private boolean _primary = false;
    private boolean _allowNull = true;
-   private UUID _key = java.util.UUID.fromString("");
-     
-   public String getPropertyName() {
-      return _propertyName;
+   private UUID _key = null;
+
+   public Field(){
+      
    }
 
-   public void setPropertyName(String propertyName) {
-      this._propertyName = propertyName;
+   public Field(String fieldName, String type, int size, boolean primary, boolean allowNull, UUID key){
+      this._fieldName = fieldName;
+      this._type = type;
+      this._size = size;
+      this._primary = primary;
+      this._allowNull = allowNull;
+      this._key = key;
+   }
+   
+   public Field(Map<String, String> item){
+      this._fieldName = item.get("fieldName");
+      this._type = item.get("type");
+      this._size = Integer.parseInt(item.get("size"));
+      this._primary = Boolean.parseBoolean(item.get("primary"));
+      this._allowNull = Boolean.parseBoolean(item.get("allowNull"));
+      this._key = UUID.fromString(item.get("key"));
+   }
+   
+   public String getFieldName() {
+      return _fieldName;
    }
 
-   public DataType getType() {
+   public void setFieldName(String fieldName) {
+      this._fieldName = fieldName;
+   }
+
+   public String getType() {
       return _type;
    }
 
-   public void setType(DataType type) {
+   public void setType(String type) {
       this._type = type;
    }
 
@@ -74,10 +96,10 @@ public class Field extends CommonObject{
    @Override
    public String getPropertyValue(String propertyName) throws Exception {
       switch (propertyName){
-      case "PropertyName":
-         return this._propertyName;
+      case "FieldName":
+         return this._fieldName;
       case "Type":
-         return this._type.toString();
+         return this._type;
       case "Size":
          return Integer.toString(this._size);
       case "Primary":
@@ -95,10 +117,10 @@ public class Field extends CommonObject{
    public void setValue(String propertyName, String propertyValue) throws Exception {
       switch (propertyName){
       case "PropertyName":
-         this._propertyName = propertyValue;
+         this._fieldName = propertyValue;
          break;
-      case "DataType":
-         this._type = DataType.valueOf(propertyValue);
+      case "Type":
+         this._type = propertyValue;
          break;
       case "Size":
          this._size = Integer.parseInt(propertyValue);
@@ -130,8 +152,8 @@ public class Field extends CommonObject{
    @Override
    public Map<String, String> exportPropertyMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
-      modelMap.put("PropertyName", this._propertyName);
-      modelMap.put("Type", this._type.toString());
+      modelMap.put("PropertyName", this._fieldName);
+      modelMap.put("Type", this._type);
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
       modelMap.put("AllowNull", Boolean.toString(this._allowNull));
@@ -152,8 +174,8 @@ public class Field extends CommonObject{
    public Map<String, String> exportValueFieldMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
       
-      modelMap.put("PropertyName", this._propertyName);
-      modelMap.put("Type", this._type.toString());
+      modelMap.put("PropertyName", this._fieldName);
+      modelMap.put("Type", this._type);
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
       modelMap.put("AllowNull", Boolean.toString(this._allowNull));
@@ -176,8 +198,8 @@ public class Field extends CommonObject{
 
    @Override
    public Object[] fetchObject() {
-      Object[] obj = new Object[5];
-      obj[0] = this._propertyName;
+      Object[] obj = new Object[6];
+      obj[0] = this._fieldName;
       obj[1] = this._type;
       obj[2] = this._size;
       obj[3] = this._primary;
@@ -188,6 +210,6 @@ public class Field extends CommonObject{
 
    @Override
    public String fetchDescription() {
-      return String.format("%s(type: %s; size: %d; primary: %s)", this._propertyName, this._type.toString(), this._size, String.valueOf(this._primary) );
+      return String.format("%s(type: %s; size: %d; primary: %s)", this._fieldName, this._type.toString(), this._size, String.valueOf(this._primary) );
    }
 }

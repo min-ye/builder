@@ -22,10 +22,11 @@ public class Console {
    private static java.io.Console c = System.console();
    private static BufferedReader b = new BufferedReader(new InputStreamReader(System.in));
    private static List<CommonObject> _entityList = null;
-   private static List<CommonObject> _propertyList = null;
+   private static List<CommonObject> _fieldList = null;
    private static String _entityJsonFileName = "";
    private static boolean ide = true;
-   private static String _quitIdent = "!";
+   private static String _quitIdent = "Return";
+   private static CommonObject _entity = null;
 
    public static void main(String[] arg) throws IOException{
       try{
@@ -38,7 +39,12 @@ public class Console {
          option.put(2, "Output");
          option.put(3, "Browse");
          do {
-            choice = readStringChoose(option);
+            try {
+               choice = readStringChoose(option);
+            }
+            catch (CancelInputException ex) {
+               choice = 0;
+            }
             switch(choice){
             case 1:
                handleInput();
@@ -95,18 +101,23 @@ public class Console {
       option.put(9, "Save");
       
       do {
+         try {
          choice = readStringChoose(option);
+         }
+         catch (CancelInputException ex) {
+            choice = 0;
+         }
          
          switch(choice){
          case 1:{
             className = "DeleteEntityHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(DeleteEntityHandler.class);
+            InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
             handler.run(_entityList, iic);
          } 
             break;
          case 2: {
             className = "UpdateEntityHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(UpdateEntityHandler.class);
+            InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
             handler.run(_entityList, iic);
          }
             break;
@@ -118,24 +129,36 @@ public class Console {
             break;
          case 5: {
             className = "DeleteFieldHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(DeleteFieldHandler.class);
-            handler.run(_entityList, iic);
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
+            handler.run(_fieldList, iic);
          }
             break;
          case 6: {
-            className = "CreateEntityHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
-            handler.run(_entityList, iic);
+            className = "UpdateFieldHandler";
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
+            handler.run(_fieldList, iic);
          }
             break;
          case 7: {
-            className = "CreateEntityHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
-            handler.run(_entityList, iic);
+            className = "CreateFieldHandler";
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(CreateFieldHandler.class);
+            handler.run(_fieldList, iic);
          }
             break;
          case 9:
-            save();
+            saveEntity();
+            if (_entity != null) {
+               saveField();
+            }
             break;
          }
       } while (choice != 0);
@@ -173,7 +196,12 @@ public class Console {
       option.put(2, "Browse Property");
       
       do {
-         choice = readStringChoose(option);
+         try {
+            choice = readStringChoose(option);
+         }
+         catch (CancelInputException ex) {
+            choice = 0;
+         }
          
          switch(choice){
          case 1:{
@@ -185,9 +213,9 @@ public class Console {
          case 2:{
             className = "BrowseHandler";
             InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
-            handler.run(_propertyList, iic);
+            handler.run(_fieldList, iic);
          } 
-            break;     
+            break;
          }
       } while (choice != 0);
    }
@@ -216,8 +244,11 @@ public class Console {
          if (input.length() == 0){
             System.out.print("Are you want to exit? (Y/N):");
             input = b.readLine();
-            if (b.toString() == "Y") {
+            if (input.toString().equals("Y")) {
                throw new CancelInputException();
+            }
+            else {
+               input = "";
             }
          }
       }
@@ -226,8 +257,11 @@ public class Console {
          if (input.length() == 0){
             System.out.print("Are you want to exit? (Y/N):");
             input = b.readLine();
-            if (b.toString() == "Y") {
+            if (input.toString().toUpperCase().equals("Y")) {
                throw new CancelInputException();
+            }
+            else {
+               input = "";
             }
          }
       }
@@ -274,19 +308,11 @@ public class Console {
          result = readLine("Please choose:");
          
          try{
-            if (result.length() == 0) {
-               System.out.print("Are you want to exit? (Y/N):");
-               result = b.readLine();
-               if (b.toString() == "Y") {
-                  throw new CancelInputException();
-               }
-            }
-            else {
                index = Integer.parseInt(result);
-               if (option.containsKey(index)) {
+               if (option.containsKey(index) || index == 0) {
                   choosed = true;
                }
-            }
+            
          }
          catch (Exception ex) {
             writeLine(ex.getMessage());
@@ -310,19 +336,11 @@ public class Console {
          result = readLine("Please choose:");
          
          try{
-            if (result.length() == 0){
-               System.out.print("Are you want to exit? (Y/N):");
-               result = b.readLine();
-               if (b.toString() == "Y") {
-                  throw new CancelInputException();
-               }
-            }
-            else {
-               index = Integer.getInteger(result);
-               if (option.containsKey(result)) {
+               index = Integer.parseInt(result);
+               if (option.containsKey(index)) {
                   choosed = true;
                }
-            }
+            
          }
          catch (Exception ex) {
             writeLine(ex.getMessage());
@@ -346,8 +364,52 @@ public class Console {
       }
    }
    
-   private static void save() throws Exception{
+   private static void initializeFieldList() throws Exception {
+      IInvokeConsole iic = new IInvokeConsole(){
+         public String read(String prompt) throws Exception{
+            return readLine(prompt);
+         }
+         
+         public void write(String prompt) throws Exception{
+            writeLine(prompt);
+         }
+         
+         public void write(List<String> message) throws Exception{
+            writeLine(message);
+         }
+         
+         public Integer chooseString(Map<Integer, String> option) throws Exception {
+            return readStringChoose(option);
+         }
+         
+         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
+            return readObjectChoose(option);
+         }
+      };
+      SelectHandler handler = SelectHandlerFactory.createHandler(SelectHandler.class);
+      _entity = handler.select(_entityList, iic);
+      
+         _fieldList = new ArrayList<CommonObject>();
+         String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
+         
+         String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
+         File file = new File(fieldJsonFileName);
+         if (file.exists()) {
+            for (Map<String, String> field : JsonHelper.INSTANCE.readJson(fieldJsonFileName)){
+               _fieldList.add(new Field(field));
+            }
+         }
+   }
+   
+   private static void saveEntity() throws Exception{
       JsonHelper.INSTANCE.writeJson(_entityList, _entityJsonFileName);
+   }
+   
+   private static void saveField() throws Exception{
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
+      
+      String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
+      JsonHelper.INSTANCE.writeJson(_fieldList, fieldJsonFileName);
    }
    
    private static String getConfigFile() throws Exception {

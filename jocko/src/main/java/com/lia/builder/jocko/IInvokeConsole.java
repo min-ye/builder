@@ -1,11 +1,9 @@
 package com.lia.builder.jocko;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.lia.common.CommonObject;
-import com.lia.common.exception.CancelInputException;
 
 public interface IInvokeConsole {
    public String read(String prompt) throws Exception;  

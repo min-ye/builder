@@ -5,16 +5,19 @@ import java.util.List;
 import com.lia.common.CommonObject;
 import com.lia.common.exception.CancelInputException;
 
-public class CreateFieldHandler extends InputHandler {
+public class DeleteHandler extends InputHandler{
+
    @Override
    public void run(List<CommonObject> input, IInvokeConsole c) throws Exception{
       try {
-         CommonObject object = new Field();
-         for (String propertyName : object.fetchPropertyName()){
-            String propertyValue = getPropertyValue(propertyName, c);
-            object.setValue(propertyName, propertyValue);
+         int index = selectObject(input, c);
+      
+         if (index != -1){
+            input.remove(index);
          }
-         input.add(object);
+         else{
+            c.write(String.format("No entity exist.[%d]", index));
+         }
       }
       catch (CancelInputException ex){
          return;

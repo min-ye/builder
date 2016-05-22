@@ -12,13 +12,21 @@ public class BrowseHandler extends InputHandler{
    
    @Override
    public void run(List<CommonObject> input, IInvokeConsole c) throws Exception{
-      Map<Integer, CommonObject> objectOption = buildCommonObjectOption(input);
-      List<String> output = new ArrayList<String>();
-      for (Entry<Integer, CommonObject> entry : objectOption.entrySet()) {
-         output.add(String.format("%d: %s;", entry.getKey(), entry.getValue().fetchDescription()));
+      try {
+         Map<Integer, CommonObject> objectOption = buildCommonObjectOption(input);
+         List<String> output = new ArrayList<String>();
+         for (Entry<Integer, CommonObject> entry : objectOption.entrySet()) {
+            output.add(String.format("%d: %s;", entry.getKey(), entry.getValue().fetchDescription()));
+         }
+         if (objectOption.size() == 0) {
+            c.write("No record.");
+         }
+         else {
+            c.write(output);
+         }
       }
-      if (objectOption.size() == 0) {
-         c.write("No record.");
+      catch (CancelInputException ex){
+         return;
       }
    }
 }

@@ -25,8 +25,30 @@ public class Console {
    private static List<CommonObject> _fieldList = null;
    private static String _entityJsonFileName = "";
    private static boolean ide = true;
-   private static String _quitIdent = "Return";
+   private static String _quitIdent = "0";
    private static CommonObject _entity = null;
+   
+   private static IInvokeConsole _iic = new IInvokeConsole(){
+      public String read(String prompt) throws Exception{
+         return readLine(prompt);
+      }
+      
+      public void write(String prompt) throws Exception{
+         writeLine(prompt);
+      }
+      
+      public void write(List<String> message) throws Exception{
+         writeLine(message);
+      }
+      
+      public Integer chooseString(Map<Integer, String> option) throws Exception {
+         return readStringChoose(option);
+      }
+      
+      public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
+         return readObjectChoose(option);
+      }
+   };
 
    public static void main(String[] arg) throws IOException{
       try{
@@ -35,9 +57,8 @@ public class Console {
          initializeEntityList();
          int choice = -1;
          Map<Integer, String> option = new HashMap<Integer, String>();
-         option.put(1, "Input");
-         option.put(2, "Output");
-         option.put(3, "Browse");
+         option.put(1, "Entity");
+         option.put(2, "Field");
          do {
             try {
                choice = readStringChoose(option);
@@ -47,12 +68,11 @@ public class Console {
             }
             switch(choice){
             case 1:
-               handleInput();
+               handleEntity();
                break;
             case 2:
+               handleField();
                break;
-            case 3:
-               handleBrowse();
             }
          } while (choice != 0);
       }
@@ -64,40 +84,15 @@ public class Console {
       }
    }
    
-   private static void handleInput() throws Exception{
-      IInvokeConsole iic = new IInvokeConsole(){
-         public String read(String prompt) throws Exception{
-            return readLine(prompt);
-         }
-         
-         public void write(String prompt) throws Exception{
-            writeLine(prompt);
-         }
-         
-         public void write(List<String> message) throws Exception{
-            writeLine(message);
-         }
-         
-         public Integer chooseString(Map<Integer, String> option) throws Exception {
-            return readStringChoose(option);
-         }
-         
-         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
-            return readObjectChoose(option);
-         }
-      };
-      
-      Integer choice = -1;
-      String className = "";
+   private static void handleEntity() throws Exception{
+      Integer choice = 0;
       
       Map<Integer, String> option = new HashMap<Integer, String>();
       
-      option.put(1, "Delete Entity");
-      option.put(2, "Update Entity");
+      option.put(2, "Browse Entity");
       option.put(3, "Create Entity");
-      option.put(5, "Delete Property");
-      option.put(6, "Update Property");
-      option.put(7, "Create Property");
+      option.put(5, "Update Entity");
+      option.put(7, "Delete Entity");
       option.put(9, "Save");
       
       do {
@@ -110,90 +105,43 @@ public class Console {
          
          switch(choice){
          case 1:{
-            className = "DeleteEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
-            handler.run(_entityList, iic);
+            handler.run(_entityList, _iic);
          } 
             break;
          case 2: {
-            className = "UpdateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
-            handler.run(_entityList, iic);
+            handler.run(_entityList, _iic);
          }
             break;
          case 3: {
-            className = "CreateEntityHandler";
             InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
-            handler.run(_entityList, iic);
+            handler.run(_entityList, _iic);
          }
             break;
-         case 5: {
-            className = "DeleteFieldHandler";
-            if (_entity == null) {
-               initializeFieldList();
-            }
-            InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
-            handler.run(_fieldList, iic);
-         }
-            break;
-         case 6: {
-            className = "UpdateFieldHandler";
-            if (_entity == null) {
-               initializeFieldList();
-            }
-            InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
-            handler.run(_fieldList, iic);
-         }
-            break;
-         case 7: {
-            className = "CreateFieldHandler";
-            if (_entity == null) {
-               initializeFieldList();
-            }
-            InputHandler handler = InputHandlerFactory.createHandler(CreateFieldHandler.class);
-            handler.run(_fieldList, iic);
+         case 5: {            
+            InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
+            handler.run(_entityList, _iic);
          }
             break;
          case 9:
             saveEntity();
-            if (_entity != null) {
-               saveField();
-            }
             break;
          }
       } while (choice != 0);
    }
    
-   private static void handleBrowse() throws Exception{
-      IInvokeConsole iic = new IInvokeConsole(){
-         public String read(String prompt) throws Exception{
-            return readLine(prompt);
-         }
-         
-         public void write(String prompt) throws Exception{
-            writeLine(prompt);
-         }
-         
-         public void write(List<String> message) throws Exception{
-            writeLine(message);
-         }
-         
-         public Integer chooseString(Map<Integer, String> option) throws Exception {
-            return readStringChoose(option);
-         }
-         
-         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
-            return readObjectChoose(option);
-         }
-      };
-      
-      Integer choice = -1;
-      String className = "";
+   private static void handleField() throws Exception{
+      Integer choice = 0;
       
       Map<Integer, String> option = new HashMap<Integer, String>();
       
-      option.put(1, "Browse Entity");      
+      option.put(1, "Select Entity");
       option.put(2, "Browse Property");
+      option.put(3, "Create Property");
+      option.put(5, "Update Property");
+      option.put(7, "Delete Property");
+      option.put(9, "Save");
       
       do {
          try {
@@ -205,21 +153,51 @@ public class Console {
          
          switch(choice){
          case 1:{
-            className = "BrowseHandler";
-            InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
-            handler.run(_entityList, iic);
+            SelectHandler handler = SelectHandlerFactory.createHandler(SelectHandler.class);
+            handler.select(_entityList, _iic);
          } 
             break;
-         case 2:{
-            className = "BrowseHandler";
+         case 2: {
+            if (_entity == null) {
+               initializeFieldList();
+            }
             InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
-            handler.run(_fieldList, iic);
-         } 
+            handler.run(_fieldList, _iic);
+         }
+            break;
+         case 3: {
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
+            handler.run(_entityList, _iic);
+         }
+            break;
+         case 5: {
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
+            handler.run(_fieldList, _iic);
+         }
+            break;
+         case 7: {
+            if (_entity == null) {
+               initializeFieldList();
+            }
+            InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
+            handler.run(_fieldList, _iic);
+         }
+            break;
+         case 9:
+            if (_entity != null) {
+               saveField();
+            }
             break;
          }
       } while (choice != 0);
    }
-
+   
    private void handleOutput(){
       String choice = "0";
       while (!choice.equals("0")){

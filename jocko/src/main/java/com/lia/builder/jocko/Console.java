@@ -25,7 +25,7 @@ public class Console {
    private static List<CommonObject> _fieldList = null;
    private static String _entityJsonFileName = "";
    private static boolean ide = true;
-   private static String _quitIdent = "0";
+   private static String _quitIdent = " ";
    private static CommonObject _entity = null;
    
    private static IInvokeConsole _iic = new IInvokeConsole(){
@@ -104,12 +104,12 @@ public class Console {
          }
          
          switch(choice){
-         case 1:{
+         case 7:{
             InputHandler handler = InputHandlerFactory.createHandler(DeleteHandler.class);
             handler.run(_entityList, _iic);
          } 
             break;
-         case 2: {
+         case 5: {
             InputHandler handler = InputHandlerFactory.createHandler(UpdateHandler.class);
             handler.run(_entityList, _iic);
          }
@@ -119,7 +119,7 @@ public class Console {
             handler.run(_entityList, _iic);
          }
             break;
-         case 5: {            
+         case 2: {            
             InputHandler handler = InputHandlerFactory.createHandler(BrowseHandler.class);
             handler.run(_entityList, _iic);
          }
@@ -153,8 +153,7 @@ public class Console {
          
          switch(choice){
          case 1:{
-            SelectHandler handler = SelectHandlerFactory.createHandler(SelectHandler.class);
-            handler.select(_entityList, _iic);
+            initializeFieldList();
          } 
             break;
          case 2: {
@@ -285,9 +284,12 @@ public class Console {
          writeLine("--------------------------------------------------");
          result = readLine("Please choose:");
          
+         if (result.equals(" ")) {
+            throw new CancelInputException();
+         }
          try{
                index = Integer.parseInt(result);
-               if (option.containsKey(index) || index == 0) {
+               if (option.containsKey(index)) {
                   choosed = true;
                }
             
@@ -312,7 +314,9 @@ public class Console {
          writeLine(String.format("%s: quit;", _quitIdent));
          writeLine("--------------------------------------------------");
          result = readLine("Please choose:");
-         
+         if (result.equals(" ")) {
+            throw new CancelInputException();
+         }
          try{
                index = Integer.parseInt(result);
                if (option.containsKey(index)) {
@@ -324,7 +328,6 @@ public class Console {
             writeLine(ex.getMessage());
             choosed = false;
          }
-         
       }
       return index;
    }

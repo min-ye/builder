@@ -59,6 +59,7 @@ public class Console {
          Map<Integer, String> option = new HashMap<Integer, String>();
          option.put(1, "Entity");
          option.put(2, "Field");
+         option.put(3, "Output");
          do {
             try {
                choice = readStringChoose(option);
@@ -72,6 +73,9 @@ public class Console {
                break;
             case 2:
                handleField();
+               break;
+            case 3:
+               handleOutput();
                break;
             }
          } while (choice != 0);
@@ -168,8 +172,8 @@ public class Console {
             if (_entity == null) {
                initializeFieldList();
             }
-            InputHandler handler = InputHandlerFactory.createHandler(CreateEntityHandler.class);
-            handler.run(_entityList, _iic);
+            InputHandler handler = InputHandlerFactory.createHandler(CreateFieldHandler.class);
+            handler.run(_fieldList, _iic);
          }
             break;
          case 5: {
@@ -197,20 +201,11 @@ public class Console {
       } while (choice != 0);
    }
    
-   private void handleOutput(){
-      String choice = "0";
-      while (!choice.equals("0")){
-         c.printf("1. Entity;\n");
-         c.printf("2. Property:\n");
-         c.printf("0. Quit;\n");
-         choice = c.readLine("Choice: \n");
-         switch(choice){
-         case "1":
-            break;
-         case "2":
-            break;
-         }
-      }
+   private static void handleOutput() throws Exception{
+      initializeFieldList();
+      OutputHandler handler = OutputHandlerFactory.createHandler(CreateModelClassHandler.class);
+      String script = handler.run(_entity, _fieldList);
+      
    }
    
    private static String readLine(String prompt) throws IOException, CancelInputException{
@@ -380,6 +375,7 @@ public class Console {
                _fieldList.add(new Field(field));
             }
          }
+         _iic.write("OK");
    }
    
    private static void saveEntity() throws Exception{

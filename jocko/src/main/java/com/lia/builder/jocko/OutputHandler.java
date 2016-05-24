@@ -14,4 +14,12 @@ public abstract class OutputHandler extends CommonHandler{
       }
       return output;
    }
+   
+   protected String getSpace(int count) {
+      String output = "";
+      for (int i = 0; i < count; i++) {
+         output += " ";
+      }
+      return output;
+   }
 }

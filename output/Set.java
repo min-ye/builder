@@ -1,4 +1,4 @@
-package <PackageName>;
+package com.lia.lego.model.brickset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,16 +8,55 @@ import java.util.Map.Entry;
 import com.lia.common.CommonObject;
 import com.lia.common.mysql.FieldModel;
 
-public class <ClassName> extends CommonObject {
-   <PrivateVariable>
+public class Set extends CommonObject {
+   private String _setID = "";
+   private String _number = "";
+   private String _variant = "";
+   private String _theme = "";
+   private String _subTheme = "";
+   private String _year = "";
+   private String _name = "";
+   private String _minifigs = "";
+   private String _pieces = "";
+   private String _priceUK = "";
+   private String _priceUS = "";
+   private String _priceCA = "";
+   private String _priceEU = "";
+   private String _imageURL = "";
+
    
-   public <ClassName>(<ConstructArgument>){
-      <ConstructArgumentAssignment>
+   public Set(String setID,
+              String number,
+              String variant,
+              String theme,
+              String subTheme,
+              String year,
+              String name,
+              String minifigs,
+              String pieces,
+              String priceUK,
+              String priceUS,
+              String priceCA,
+              String priceEU,
+              String imageURL){
+      this._setID = setID;
+      this._number = number;
+      this._variant = variant;
+      this._theme = theme;
+      this._subTheme = subTheme;
+      this._year = year;
+      this._name = name;
+      this._minifigs = minifigs;
+      this._pieces = pieces;
+      this._priceUK = priceUK;
+      this._priceUS = priceUS;
+      this._priceCA = priceCA;
+      this._priceEU = priceEU;
+      this._imageURL = imageURL;
    }
    
-   public <ClassName>(CommonObject commonObject){
+   public Set(CommonObject commonObject){
       Object[] object = commonObject.fetchObject();
-      <ConstructObjectArgumentAssignment>
       this._setID = object[0].toString();
       this._number = object[1].toString();
       this._variant = object[2].toString();

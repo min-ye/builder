@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import org.apache.commons.io.IOUtils;
 
 import com.lia.common.CommonObject;
+import com.lia.common.FileHelper;
 import com.lia.common.JsonHelper;
 import com.lia.common.Profile;
 import com.lia.common.exception.CancelInputException;
@@ -205,7 +206,8 @@ public class Console {
       initializeFieldList();
       OutputHandler handler = OutputHandlerFactory.createHandler(CreateModelClassHandler.class);
       String script = handler.run(_entity, _fieldList);
-      
+      String fileName = getModelOutputFileName(_entity);
+      FileHelper.INSTANCE.saveContent(script, fileName);
    }
    
    private static String readLine(String prompt) throws IOException, CancelInputException{
@@ -341,41 +343,19 @@ public class Console {
    }
    
    private static void initializeFieldList() throws Exception {
-      IInvokeConsole iic = new IInvokeConsole(){
-         public String read(String prompt) throws Exception{
-            return readLine(prompt);
-         }
-         
-         public void write(String prompt) throws Exception{
-            writeLine(prompt);
-         }
-         
-         public void write(List<String> message) throws Exception{
-            writeLine(message);
-         }
-         
-         public Integer chooseString(Map<Integer, String> option) throws Exception {
-            return readStringChoose(option);
-         }
-         
-         public Integer chooseObject(Map<Integer, CommonObject> option) throws Exception {
-            return readObjectChoose(option);
-         }
-      };
       SelectHandler handler = SelectHandlerFactory.createHandler(SelectHandler.class);
-      _entity = handler.select(_entityList, iic);
+      _entity = handler.select(_entityList, _iic);
       
-         _fieldList = new ArrayList<CommonObject>();
-         String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
+      _fieldList = new ArrayList<CommonObject>();
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
          
-         String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
-         File file = new File(fieldJsonFileName);
-         if (file.exists()) {
-            for (Map<String, String> field : JsonHelper.INSTANCE.readJson(fieldJsonFileName)){
-               _fieldList.add(new Field(field));
-            }
+      String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
+      File file = new File(fieldJsonFileName);
+      if (file.exists()) {
+         for (Map<String, String> field : JsonHelper.INSTANCE.readJson(fieldJsonFileName)){
+            _fieldList.add(new Field(field));
          }
-         _iic.write("OK");
+      }
    }
    
    private static void saveEntity() throws Exception{
@@ -392,5 +372,12 @@ public class Console {
    private static String getConfigFile() throws Exception {
       InputStream url = Console.class.getResourceAsStream("/config.json");
       return IOUtils.toString(url);
+   }
+   
+   private static String getModelOutputFileName(CommonObject entity) throws Exception {
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
+      Entity entityObject = (Entity) entity;
+      String output = String.format("%s%s.java", folder, entityObject.getClassName());
+      return output;
    }
 }

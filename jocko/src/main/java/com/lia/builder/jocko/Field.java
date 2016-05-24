@@ -72,7 +72,7 @@ public class Field extends CommonObject{
       this._primary = primary;
    }
    
-   public boolean getAllowNull() {
+   public boolean isAllowNull() {
       return _allowNull;
    }
    

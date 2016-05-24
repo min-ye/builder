@@ -19,6 +19,12 @@ public class CreateModelClassHandler extends OutputHandler {
       int length = entityObject.getClassName().length();
       output = output.replaceAll("<ConstructArgument>", getConstructArgument(fieldList, length));
       output = output.replaceAll("<ConstructArgumentAssignment>", getConstructArgumentAssignment(fieldList));
+      output = output.replaceAll("<ConstructObjectArgumentAssignment>", getConstructObjectArgumentAssignment(fieldList));
+      output = output.replaceAll("<Property>", getProperty(fieldList));
+      output = output.replaceAll("<GetPropertyValue>", getGetPropertyValue(fieldList));
+      output = output.replaceAll("<SetPropertyValue>", getSetPropertyValue(fieldList));
+      output = output.replaceAll("<ExportModel>", getExportModel(fieldList));
+      output = output.replaceAll("<ExportPropertyMap>", getExportPropertyMap(fieldList));
       return output;
    }
    
@@ -99,4 +105,103 @@ public class CreateModelClassHandler extends OutputHandler {
       }
       return output;
    }
+   
+   private String getConstructObjectArgumentAssignment(List<CommonObject> fieldList) {
+      String output = "";
+      int index = 0;
+      for (CommonObject obj : fieldList) {
+         
+         Field field = (Field) obj;
+         String indent = "\r\n" + getTab(2);
+         output += (output.length() > 0? indent : "");
+         String variable = String.format("this.%s = ConvertTo%s(object[%d]);", getPrivateVariableName(field.getFieldName()), field.getType(), index);
+         
+         output += variable;
+         index++;
+      }
+      return output;
+   }
+   
+   private String getProperty(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         
+         Field field = (Field) obj;
+         output += (output.length() > 0? getTab(1) : "");
+         output += String.format("public %s get%s() {", field.getType(), field.getFieldName());
+         output += "\r\n";
+         output += String.format("%sreturn %s;", getTab(2), getPrivateVariableName(field.getFieldName()));
+         output += "\r\n";
+         output += String.format("%s}", getTab(1));
+         output += "\r\n";
+         output += "\r\n";
+         output += String.format("%spublic void set%s(%s %s) {", getTab(1), field.getFieldName(), field.getType(), getVariableName(field.getFieldName()));
+         output += "\r\n";
+         output += String.format("%sthis.%s = %s", getTab(2), getPrivateVariableName(field.getFieldName()), getVariableName(field.getFieldName()));
+         output += "\r\n";
+         output += String.format("%s}", getTab(1));
+         output += "\r\n";
+         output += "\r\n";
+      }
+      return output;
+   }
+   
+   private String getGetPropertyValue(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         output += (output.length() > 0? getTab(2) : "");
+         output += String.format("case \"%s\":", field.getFieldName());
+         output += "\r\n";
+         output += String.format("%sreturn this.%s.toString();", getTab(3), getPrivateVariableName(field.getFieldName()));
+         output += "\r\n";
+      }
+      return output;
+   }
+   
+   private String getSetPropertyValue(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         output += (output.length() > 0? getTab(2) : "");
+         output += String.format("case \"%s\":", field.getFieldName());
+         output += "\r\n";
+         if (field.getType().equals("String")) {
+            output += String.format("%sthis.%s = fieldValue;", getTab(3), getPrivateVariableName(field.getFieldName()));
+         }
+         else {
+            output += String.format("%sthis.%s = ConvertTo%s(fieldValue);", getTab(3), getPrivateVariableName(field.getFieldName()), field.getType());
+         }
+         output += "\r\n";
+         output += String.format("%sbreak;", getTab(3));
+         output += "\r\n";
+      }
+      return output;
+   }
+
+   private String getExportModel(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         output += (output.length() > 0? getTab(2) : "");
+         String fieldName = field.getFieldName();
+         output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s, %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         output += "\r\n";
+      }
+      return output;
+   }
+   
+   private String getExportPropertyMap(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         output += (output.length() > 0? getTab(2) : "");
+         String fieldName = field.getFieldName();
+         output += String.format("%smodelMap.put(\"%s\", getPropertyValueString(this.%s);", this.%s, %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         output += "\r\n";
+      }
+      return output;
+   }
+   
 }
+modelMap.put("SetID", getPropertyValueString(this._setID));

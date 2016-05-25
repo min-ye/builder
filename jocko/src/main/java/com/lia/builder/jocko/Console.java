@@ -208,6 +208,10 @@ public class Console {
       String script = handler.run(_entity, _fieldList);
       String fileName = getModelOutputFileName(_entity);
       FileHelper.INSTANCE.saveContent(script, fileName);
+      handler = OutputHandlerFactory.createHandler(CreateMySQLTableHandler.class);
+      script = handler.run(_entity, _fieldList);
+      fileName = getMySQLTableOutputFileName(_entity);
+      FileHelper.INSTANCE.saveContent(script, fileName);
    }
    
    private static String readLine(String prompt) throws IOException, CancelInputException{
@@ -378,6 +382,13 @@ public class Console {
       String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
       Entity entityObject = (Entity) entity;
       String output = String.format("%s%s.java", folder, entityObject.getClassName());
+      return output;
+   }
+   
+   private static String getMySQLTableOutputFileName(CommonObject entity) throws Exception {
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
+      Entity entityObject = (Entity) entity;
+      String output = String.format("%s%s.sql", folder, entityObject.getClassName());
       return output;
    }
 }

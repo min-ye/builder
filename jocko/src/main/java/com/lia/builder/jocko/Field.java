@@ -120,16 +120,36 @@ public class Field extends CommonObject{
          this._fieldName = propertyValue;
          break;
       case "Type":
-         this._type = propertyValue;
+         if (propertyValue.length() > 0) {
+            this._type = propertyValue;
+         }
+         else {
+            this._type = "String";
+         }
          break;
       case "Size":
-         this._size = Integer.parseInt(propertyValue);
+         if (propertyValue.length() > 0) {
+            this._size = Integer.parseInt(propertyValue);
+         }
+         else {
+            this._size = 0;
+         }
          break;
       case "Primary":
-         this._primary = Boolean.parseBoolean(propertyValue);
+         if (propertyValue.length() > 0) {
+            this._primary = Boolean.parseBoolean(propertyValue);
+         }
+         else {
+            this._primary = false;
+         }
          break;
       case "AllowNull":
-         this._allowNull = Boolean.parseBoolean(propertyValue);
+         if (propertyValue.length() > 0) {
+            this._allowNull = Boolean.parseBoolean(propertyValue);
+         }
+         else {
+            this._allowNull = true;
+         }
          break;
       case "Key":
          if (propertyValue.length() > 0)

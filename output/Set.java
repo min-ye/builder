@@ -320,10 +320,10 @@ public class Set extends CommonObject {
       modelMap.put("Name", getPropertyValueString(this._name));
       modelMap.put("Minifigs", getPropertyValueString(this._minifigs));
       modelMap.put("Pieces", getPropertyValueString(this._pieces));
-      modelMap.put("UKPrice", getPropertyValueString(this._priceUK));
-      modelMap.put("USPrice", getPropertyValueString(this._priceUS));
-      modelMap.put("CAPrice", getPropertyValueString(this._priceCA));
-      modelMap.put("EUPrice", getPropertyValueString(this._priceEU));
+      modelMap.put("PriceUK", getPropertyValueString(this._priceUK));
+      modelMap.put("PriceUS", getPropertyValueString(this._priceUS));
+      modelMap.put("PriceCA", getPropertyValueString(this._priceCA));
+      modelMap.put("PriceEU", getPropertyValueString(this._priceEU));
       modelMap.put("ImageURL", getPropertyValueString(this._imageURL));
 
       return modelMap;
@@ -338,7 +338,7 @@ public class Set extends CommonObject {
    }
    
    @Override
-   public Map<String, String> exportValueFieldMap(){
+   public Map<String, String> exportValuePropertyMap(){
       Map<String, String> modelMap = new HashMap<String, String>();
       modelMap.put("Number", getPropertyValueString(this._number));
       modelMap.put("Variant", getPropertyValueString(this._variant));
@@ -348,10 +348,10 @@ public class Set extends CommonObject {
       modelMap.put("Name", getPropertyValueString(this._name));
       modelMap.put("Minifigs", getPropertyValueString(this._minifigs));
       modelMap.put("Pieces", getPropertyValueString(this._pieces));
-      modelMap.put("UKPrice", getPropertyValueString(this._priceUK));
-      modelMap.put("USPrice", getPropertyValueString(this._priceUS));
-      modelMap.put("CAPrice", getPropertyValueString(this._priceCA));
-      modelMap.put("EUPrice", getPropertyValueString(this._priceEU));
+      modelMap.put("PriceUK", getPropertyValueString(this._priceUK));
+      modelMap.put("PriceUS", getPropertyValueString(this._priceUS));
+      modelMap.put("PriceCA", getPropertyValueString(this._priceCA));
+      modelMap.put("PriceEU", getPropertyValueString(this._priceEU));
       modelMap.put("ImageURL", getPropertyValueString(this._imageURL));
 
       return modelMap;

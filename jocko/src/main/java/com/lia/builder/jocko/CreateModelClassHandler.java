@@ -25,6 +25,11 @@ public class CreateModelClassHandler extends OutputHandler {
       output = output.replaceAll("<SetPropertyValue>", getSetPropertyValue(fieldList));
       output = output.replaceAll("<ExportModel>", getExportModel(fieldList));
       output = output.replaceAll("<ExportPropertyMap>", getExportPropertyMap(fieldList));
+      output = output.replaceAll("<ExportKeyPropertyMap>", getExportKeyPropertyMap(fieldList));
+      output = output.replaceAll("<ExportValuePropertyMap>", getExportValuePropertyMap(fieldList));
+      output = output.replaceAll("<FetchPropertyName>", getFetchPropertyName(fieldList));
+      output = output.replaceAll("<FetchObject>", getFetchObject(fieldList));
+      output = output.replaceAll("<PropertyCount>", String.valueOf(fieldList.size()));
       return output;
    }
    
@@ -197,11 +202,67 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          output += (output.length() > 0? getTab(2) : "");
          String fieldName = field.getFieldName();
-         output += String.format("%smodelMap.put(\"%s\", getPropertyValueString(this.%s);", this.%s, %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
          output += "\r\n";
       }
       return output;
    }
    
+   private String getExportKeyPropertyMap(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         if (field.isPrimary()) {
+            output += (output.length() > 0? getTab(2) : "");
+            String fieldName = field.getFieldName();
+            output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
+            output += "\r\n";
+         }
+      }
+      return output;
+   }
+   
+   private String getExportValuePropertyMap(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         if (!field.isPrimary()) {
+            output += (output.length() > 0? getTab(2) : "");
+            String fieldName = field.getFieldName();
+            output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
+            output += "\r\n";
+         }
+      }
+      return output;
+   }
+   
+   private String getFetchPropertyName(List<CommonObject> fieldList) {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         if (!field.isPrimary()) {
+            output += (output.length() > 0? getTab(2) : "");
+            String fieldName = field.getFieldName();
+            output += String.format("fieldNameList.add(\"%s\");", fieldName);
+            output += "\r\n";
+         }
+      }
+      return output;
+   }
+   
+   private String getFetchObject(List<CommonObject> fieldList) {
+      String output = "";
+      int index = 0;
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         if (!field.isPrimary()) {
+            output += (output.length() > 0? getTab(2) : "");
+            String fieldName = field.getFieldName();
+            output += String.format("obj[%d] = this.%s;", index, getPrivateVariableName(fieldName));
+            output += "\r\n";
+            index ++;
+         }
+      }
+      return output;
+   }
 }
-modelMap.put("SetID", getPropertyValueString(this._setID));

@@ -215,7 +215,7 @@ public class Console {
       if (ide){
          System.out.println(prompt);
          input = b.readLine();
-         if (input.length() == 0){
+         /*if (input.length() == 0){
             System.out.print("Are you want to exit? (Y/N):");
             input = b.readLine();
             if (input.toString().equals("Y")) {
@@ -224,11 +224,11 @@ public class Console {
             else {
                input = "";
             }
-         }
+         }*/
       }
       else {
          input = c.readLine(prompt);
-         if (input.length() == 0){
+         /*if (input.length() == 0){
             System.out.print("Are you want to exit? (Y/N):");
             input = b.readLine();
             if (input.toString().toUpperCase().equals("Y")) {
@@ -237,7 +237,7 @@ public class Console {
             else {
                input = "";
             }
-         }
+         }*/
       }
       return input;
    }

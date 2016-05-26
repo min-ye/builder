@@ -1,0 +1,106 @@
+[
+   {
+      "fieldName": "Number",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "496169c2-3bda-4399-bb68-e3c4e1701269",
+      "primary": false
+   },
+   {
+      "fieldName": "Variant",
+      "size": 0,
+      "allowNull": true,
+      "type": "Int",
+      "key": "0190067a-d083-44f1-8976-4859b9d43e6f",
+      "primary": false
+   },
+   {
+      "fieldName": "SubThemeKey",
+      "size": 0,
+      "allowNull": true,
+      "type": "UUID",
+      "key": "c05072f2-b047-4112-90c6-f810d12cd12b",
+      "primary": false
+   },
+   {
+      "fieldName": "Year",
+      "size": 0,
+      "allowNull": true,
+      "type": "Short",
+      "key": "87989ea9-09ac-428b-95d8-ea959d9293f3",
+      "primary": false
+   },
+   {
+      "fieldName": "Name",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "5f08715f-a5aa-43ad-87e0-e8d7d94d6028",
+      "primary": false
+   },
+   {
+      "fieldName": "Minifigs",
+      "size": 0,
+      "allowNull": true,
+      "type": "Short",
+      "key": "7119d7c5-3e43-4d09-9f47-cfeca885cbee",
+      "primary": false
+   },
+   {
+      "fieldName": "Piece",
+      "size": 0,
+      "allowNull": true,
+      "type": "Int",
+      "key": "be89bcbd-401c-430b-9671-9dd00cf07fae",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceUK",
+      "size": 0,
+      "allowNull": true,
+      "type": "Float",
+      "key": "3b731ea8-3ba8-4671-b1e8-697125acf401",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceUS",
+      "size": 0,
+      "allowNull": true,
+      "type": "Float",
+      "key": "1184ffd5-07d1-4dab-9164-e29e11dfffc9",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceCA",
+      "size": 0,
+      "allowNull": true,
+      "type": "Float",
+      "key": "2c986cc0-277d-4371-a1c4-c53b900fdfd8",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceEU",
+      "size": 0,
+      "allowNull": true,
+      "type": "Float",
+      "key": "449f8414-c996-46a1-aff0-3e05748ab663",
+      "primary": false
+   },
+   {
+      "fieldName": "ImageURL",
+      "size": 256,
+      "allowNull": true,
+      "type": "String",
+      "key": "422b186d-d4a1-4871-b09f-750b49f199fb",
+      "primary": false
+   },
+   {
+      "fieldName": "Key",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "0cb238df-5c41-4fb5-bd2f-371e21705d43",
+      "primary": true
+   }
+]

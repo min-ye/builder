@@ -1,0 +1,50 @@
+[
+   {
+      "fieldName": "ElementID",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "26bdc774-0030-4cbd-ae2d-7587296be13c",
+      "primary": false
+   },
+   {
+      "fieldName": "DesignID",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "6ad50366-66a8-4555-8b36-27c57f4bf2e4",
+      "primary": false
+   },
+   {
+      "fieldName": "ColorKey",
+      "size": 0,
+      "allowNull": true,
+      "type": "UUID",
+      "key": "e31ee879-9a97-4b3a-a769-cd043c1bbb30",
+      "primary": false
+   },
+   {
+      "fieldName": "CategoryKey",
+      "size": 0,
+      "allowNull": true,
+      "type": "UUID",
+      "key": "6e06580c-18f8-48ff-bb9f-89b09c4cee21",
+      "primary": false
+   },
+   {
+      "fieldName": "Name",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "dc4443b0-7944-40fb-a930-297f0ac7bbe0",
+      "primary": false
+   },
+   {
+      "fieldName": "ImageURL",
+      "size": 256,
+      "allowNull": true,
+      "type": "String",
+      "key": "afd30c0c-e60a-4397-ab24-34ce36f7ab47",
+      "primary": false
+   }
+]

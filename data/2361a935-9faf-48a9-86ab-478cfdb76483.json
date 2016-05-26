@@ -1,0 +1,114 @@
+[
+   {
+      "fieldName": "SetID",
+      "size": 16,
+      "allowNull": false,
+      "type": "String",
+      "key": "efc3175a-0c11-481a-84d6-1334755ec2cf",
+      "primary": true
+   },
+   {
+      "fieldName": "Number",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "4dae391d-71ed-46be-a1e4-eac5f16062c6",
+      "primary": false
+   },
+   {
+      "fieldName": "Variant",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "348a400c-79c3-40b3-821a-c239917b586f",
+      "primary": false
+   },
+   {
+      "fieldName": "Theme",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "c64c1408-e816-48d6-81d5-e4a8559c26ae",
+      "primary": false
+   },
+   {
+      "fieldName": "SubTheme",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "691e36ca-183c-44ad-a8ea-9eb26b6fcf8d",
+      "primary": false
+   },
+   {
+      "fieldName": "Year",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "7b7a7eae-9de3-4b44-ace3-559021edacc1",
+      "primary": false
+   },
+   {
+      "fieldName": "Name",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "a342b485-8735-495c-9e8c-062a324ba767",
+      "primary": false
+   },
+   {
+      "fieldName": "Minifigs",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "d4bb2e22-e3ca-4f21-a26d-801658168f17",
+      "primary": false
+   },
+   {
+      "fieldName": "Pieces",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "ccff7774-55e0-47db-b310-9735f37918fe",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceUK",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "aa449152-f47a-417f-8a2a-2f4670d4f176",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceUS",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "d8663e55-8444-4e16-9e2b-6b77c90c46a0",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceCA",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "af8bc959-0db0-4464-8a12-9a1e08ed1f4a",
+      "primary": false
+   },
+   {
+      "fieldName": "PriceEU",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "fe30a472-3770-4a5a-9cf0-e4a0c9b8e932",
+      "primary": false
+   },
+   {
+      "fieldName": "ImageURL",
+      "size": 256,
+      "allowNull": true,
+      "type": "String",
+      "key": "ae5ce863-1c55-4edd-8983-15245c6c1ce1",
+      "primary": false
+   }
+]

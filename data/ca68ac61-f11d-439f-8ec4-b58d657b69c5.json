@@ -1,0 +1,26 @@
+[
+   {
+      "fieldName": "Name",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "18ed89e1-3860-4073-a7d0-02d0c2c3dc2a",
+      "primary": false
+   },
+   {
+      "fieldName": "ThemeKey",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "51bcebfd-7989-4794-911c-1a2f2f3f6028",
+      "primary": false
+   },
+   {
+      "fieldName": "Key",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "12d19d68-5bee-4ff8-bd4b-224b7ca81eb0",
+      "primary": true
+   }
+]

@@ -13,8 +13,9 @@ public class CreateMySQLTableHandler extends OutputHandler {
       InputStream url = Console.class.getResourceAsStream("/MySQLTable.bit");
       String output = IOUtils.toString(url);
       Entity entityObject = (Entity) entity;
-      output = output.replaceAll("<ClassName>", getClassName(entityObject));
-      output = output.replaceAll("<CreateColumn>", getCreateColumn(fieldList));
+      output = output.replaceAll("<TableName>", getClassName(entityObject));
+      output = output.replaceAll("<ColumnDefinition>", getColumnDefinition(fieldList));
+      output = output.replaceAll("<PrimaryKey>", getPrimaryKey(fieldList));
       return output;
    }
    
@@ -22,15 +23,27 @@ public class CreateMySQLTableHandler extends OutputHandler {
       return entity.getClassName();
    }
 
-   private String getCreateColumn(List<CommonObject> fieldList) throws Exception {
+   private String getColumnDefinition(List<CommonObject> fieldList) throws Exception {
       String output = "";
       for (CommonObject obj : fieldList) {
          Field field = (Field) obj;
-         if (!field.isPrimary()) {
-            output += (output.length() > 0? getTab(2) : "");
+            output += (output.length() > 0? getTab(1) : "");
             String fieldName = field.getFieldName();
             output += String.format("`%s` %s %s,", fieldName, getTypeDefinition(field), getAllowNull(field));
             output += "\r\n";
+
+      }
+      return output;
+   }
+   
+   private String getPrimaryKey(List<CommonObject> fieldList) throws Exception {
+      String output = "";
+      for (CommonObject obj : fieldList) {
+         Field field = (Field) obj;
+         if (field.isPrimary()) {
+            output += (output.length() > 0? "," : "");
+            String fieldName = field.getFieldName();
+            output += String.format("`%s`", fieldName);
          }
       }
       return output;

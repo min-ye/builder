@@ -352,10 +352,11 @@ public class Console {
       
       _fieldList = new ArrayList<CommonObject>();
       String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
-         
+      
       String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
       File file = new File(fieldJsonFileName);
       if (file.exists()) {
+         
          for (Map<String, String> field : JsonHelper.INSTANCE.readJson(fieldJsonFileName)){
             _fieldList.add(new Field(field));
          }

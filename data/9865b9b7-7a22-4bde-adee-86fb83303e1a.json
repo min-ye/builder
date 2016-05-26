@@ -1,0 +1,26 @@
+[
+   {
+      "fieldName": "SetKey",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "dfd060f7-587a-4011-b972-c064c9dd3d80",
+      "primary": false
+   },
+   {
+      "fieldName": "BrickKey",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "8b266843-5a5f-4945-bb5c-e2262e410683",
+      "primary": false
+   },
+   {
+      "fieldName": "Quantity",
+      "size": 0,
+      "allowNull": false,
+      "type": "Int",
+      "key": "ad4715a8-c472-48d2-a69d-678802139341",
+      "primary": false
+   }
+]

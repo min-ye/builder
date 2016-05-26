@@ -1,0 +1,18 @@
+[
+   {
+      "fieldName": "Name",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "692bfb58-ff8d-464f-9407-c13d3d630a5e",
+      "primary": false
+   },
+   {
+      "fieldName": "Key",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "79bef3e2-2449-4a3e-9673-b251ace8a3d2",
+      "primary": true
+   }
+]

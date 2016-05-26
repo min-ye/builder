@@ -1,0 +1,47 @@
+[
+   {
+      "className": "Set",
+      "packageName": "com.lia.lego.model.brickset",
+      "key": "2361a935-9faf-48a9-86ab-478cfdb76483"
+   },
+   {
+      "className": "Inventory",
+      "packageName": "com.lia.lego.model.brickset",
+      "key": "c45bcefc-2926-450f-9a81-4a48f374c241"
+   },
+   {
+      "className": "Set",
+      "packageName": "com.lia.lego.model",
+      "key": "56960112-a667-4ed2-bc43-5ff7ea26692a"
+   },
+   {
+      "className": "Brick",
+      "packageName": "com.lia.lego.model",
+      "key": "53d8975c-949a-4b6b-a94a-1a8d78a0012c"
+   },
+   {
+      "className": "Theme",
+      "packageName": "com.lia.lego.model",
+      "key": "713a2a00-f0fc-4a8f-a8d7-7473f1960a85"
+   },
+   {
+      "className": "SubTheme",
+      "packageName": "com.lia.lego.model",
+      "key": "ca68ac61-f11d-439f-8ec4-b58d657b69c5"
+   },
+   {
+      "className": "Inventory",
+      "packageName": "com.lia.lego.model",
+      "key": "9865b9b7-7a22-4bde-adee-86fb83303e1a"
+   },
+   {
+      "className": "Color",
+      "packageName": "com.lia.lego.model",
+      "key": "916abb09-ce1a-4ff6-be48-4aebadb22e99"
+   },
+   {
+      "className": "Category",
+      "packageName": "com.lia.lego.model",
+      "key": "2554d399-4bb6-46dc-93b9-ee7d19df2e4a"
+   }
+]

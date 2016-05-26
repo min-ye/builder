@@ -116,7 +116,7 @@ public class Field extends CommonObject{
    @Override
    public void setValue(String propertyName, String propertyValue) throws Exception {
       switch (propertyName){
-      case "PropertyName":
+      case "FieldName":
          this._fieldName = propertyValue;
          break;
       case "Type":
@@ -172,7 +172,7 @@ public class Field extends CommonObject{
    @Override
    public Map<String, String> exportPropertyMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
-      modelMap.put("PropertyName", this._fieldName);
+      modelMap.put("FieldName", this._fieldName);
       modelMap.put("Type", this._type);
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
@@ -194,7 +194,7 @@ public class Field extends CommonObject{
    public Map<String, String> exportValueFieldMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
       
-      modelMap.put("PropertyName", this._fieldName);
+      modelMap.put("FieldName", this._fieldName);
       modelMap.put("Type", this._type);
       modelMap.put("Size", Integer.toString(this._size));
       modelMap.put("Primary", Boolean.toString(this._primary));
@@ -207,7 +207,7 @@ public class Field extends CommonObject{
    public List<String> fetchPropertyName() {
       List<String> fieldNameList = new ArrayList<String>();
       
-      fieldNameList.add("PropertyName");
+      fieldNameList.add("FieldName");
       fieldNameList.add("Type");
       fieldNameList.add("Size");
       fieldNameList.add("Primary");

@@ -65,6 +65,7 @@ public class CreateModelClassHandler extends OutputHandler {
       case "String":
          return "\"\"";
       case "Integer":
+      case "Int":
       case "Short":
       case "Long":
       case "Float":
@@ -74,6 +75,8 @@ public class CreateModelClassHandler extends OutputHandler {
          return "false";
       case "Data":
          return "new Date()";
+      case "UUID":
+         return "null";
       default:
          throw new Exception(String.format("Unknown Data Type [%s]", type));
       }
@@ -105,8 +108,6 @@ public class CreateModelClassHandler extends OutputHandler {
          String variable = String.format("this.%s = %s;", getPrivateVariableName(field.getFieldName()), getVariableName(field.getFieldName()));
          
          output += variable;
-         
-
       }
       return output;
    }

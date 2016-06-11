@@ -382,14 +382,16 @@ public class Console {
    private static String getModelOutputFileName(CommonObject entity) throws Exception {
       String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
       Entity entityObject = (Entity) entity;
-      String output = String.format("%s%s.java", folder, entityObject.getClassName());
+      String packageFolder = entityObject.getPackageName();
+      packageFolder = packageFolder.replace(".", "/");
+      String output = String.format("%s%s/%s.java", folder, packageFolder, entityObject.getClassName());
       return output;
    }
    
    private static String getMySQLTableOutputFileName(CommonObject entity) throws Exception {
       String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
       Entity entityObject = (Entity) entity;
-      String output = String.format("%s%s.sql", folder, entityObject.getClassName());
+      String output = String.format("%sSQLTable/%s.sql", folder, entityObject.getTableName());
       return output;
    }
 }

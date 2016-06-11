@@ -14,21 +14,24 @@ import java.util.UUID;
 public class Entity extends CommonObject{
    private String _packageName = "";
    private String _className = "";
+   private String _tableName = "";
    private UUID _key = null;
 
    public Entity(){
       
    }
 
-   public Entity(String packageName, String className, UUID key){
+   public Entity(String packageName, String className, String tableName, UUID key){
       this._packageName = packageName;
       this._className = className;
+      this._tableName = tableName;
       this._key = key;
    }
    
    public Entity(Map<String, String> item){
       this._packageName = item.get("packageName");
       this._className = item.get("className");
+      this._tableName = item.get("tableName");
       this._key = UUID.fromString(item.get("key"));
    }
    
@@ -47,6 +50,14 @@ public class Entity extends CommonObject{
 
    public void setClassName(String _className) {
       this._className = _className;
+   }
+   
+   public String getTableName() {
+      return _tableName;
+   }
+
+   public void setTableName(String _tableName) {
+      this._tableName = _tableName;
    }
 
    public UUID getKey() {
@@ -69,6 +80,8 @@ public class Entity extends CommonObject{
          return this._packageName;
       case "ClassName":
          return this._className;
+      case "TableName":
+         return this._tableName;
       case "Key":
          return this._key.toString();
       default:
@@ -84,6 +97,9 @@ public class Entity extends CommonObject{
          break;
       case "ClassName":
          this._className = fieldValue;
+         break;
+      case "TableName":
+         this._tableName = fieldValue;
          break;
       case "Key":
          if (fieldValue.length() > 0)
@@ -108,6 +124,7 @@ public class Entity extends CommonObject{
       Map<String, String> modelMap = new HashMap<String, String>();
       modelMap.put("PackageName", this._packageName);
       modelMap.put("ClassName", this._className);
+      modelMap.put("TableName", this._tableName);
       modelMap.put("Key", this._key.toString());
 
       return modelMap;
@@ -127,6 +144,7 @@ public class Entity extends CommonObject{
       
       modelMap.put("ProjectName", this._packageName);
       modelMap.put("ClassName", this._className);
+      modelMap.put("TableName", this._tableName);
 
       return modelMap;
    }
@@ -137,6 +155,7 @@ public class Entity extends CommonObject{
       
       fieldNameList.add("PackageName");
       fieldNameList.add("ClassName");
+      fieldNameList.add("TableName");
       fieldNameList.add("Key");
       return fieldNameList;
    }
@@ -146,7 +165,8 @@ public class Entity extends CommonObject{
       Object[] obj = new Object[3];
       obj[0] = this._packageName;
       obj[1] = this._className;
-      obj[2] = this._key;
+      obj[2] = this._tableName;
+      obj[3] = this._key;
       return obj;
    }
 

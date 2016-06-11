@@ -56,6 +56,9 @@ public class CreateMySQLTableHandler extends OutputHandler {
       case "Long":
          return "INTEGER";
       case "Int":
+      case "Integer":
+         return "SMALLINT";
+      case "Short":
          return "SMALLINT";
       case "Double":
          return "DOUBLE";
@@ -67,6 +70,8 @@ public class CreateMySQLTableHandler extends OutputHandler {
          return "TIME";
       case "Boolean":
          return "BIT";
+      case "UUID":
+         return "VARCHAR(36)";
       default:
          throw new Exception(String.format("Unknown Type [%s]", field.getType()));   
       }

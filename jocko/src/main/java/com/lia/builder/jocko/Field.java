@@ -191,7 +191,7 @@ public class Field extends CommonObject{
    }
 
    @Override
-   public Map<String, String> exportValueFieldMap() {
+   public Map<String, String> exportValuePropertyMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
       
       modelMap.put("FieldName", this._fieldName);

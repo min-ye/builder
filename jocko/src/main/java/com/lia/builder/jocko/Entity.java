@@ -139,7 +139,7 @@ public class Entity extends CommonObject{
    }
 
    @Override
-   public Map<String, String> exportValueFieldMap() {
+   public Map<String, String> exportValuePropertyMap() {
       Map<String, String> modelMap = new HashMap<String, String>();
       
       modelMap.put("ProjectName", this._packageName);

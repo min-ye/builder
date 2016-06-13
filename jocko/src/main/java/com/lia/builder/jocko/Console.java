@@ -212,6 +212,10 @@ public class Console {
       script = handler.run(_entity, _fieldList);
       fileName = getMySQLTableOutputFileName(_entity);
       FileHelper.INSTANCE.saveContent(script, fileName);
+      handler = OutputHandlerFactory.createHandler(CreateHibernateHandler.class);
+      script = handler.run(_entity, _fieldList);
+      fileName = getHibernateOutputFileName(_entity);
+      FileHelper.INSTANCE.saveContent(script, fileName);
    }
    
    private static String readLine(String prompt) throws IOException, CancelInputException{
@@ -392,6 +396,13 @@ public class Console {
       String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
       Entity entityObject = (Entity) entity;
       String output = String.format("%sSQLTable/%s.sql", folder, entityObject.getTableName());
+      return output;
+   }
+   
+   private static String getHibernateOutputFileName(CommonObject entity) throws Exception {
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
+      Entity entityObject = (Entity) entity;
+      String output = String.format("%s%s/%s.hbm.xml", folder, "hibernate", entityObject.getTableName());
       return output;
    }
 }

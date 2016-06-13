@@ -28,6 +28,7 @@ public class CreateHibernateHandler extends OutputHandler {
       String output = "";
       for (CommonObject obj : fieldList) {
          Field field = (Field) obj;
+         if (!field.isPrimary()) {
             output += (output.length() > 0? getTab(2) : "");
             String fieldName = field.getFieldName();
             if (getHibernateTypeName(field.getType()).equals("string")) {
@@ -37,7 +38,7 @@ public class CreateHibernateHandler extends OutputHandler {
                output += String.format("<property name=\"%s\" column=\"%s\" type=\"%s\"></property>", fieldName, fieldName, getHibernateTypeName(field.getType()));
             }
             output += "\r\n";
-
+         }
       }
       return output;
    }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.lia.common.CommonObject;
 import com.lia.common.mysql.FieldModel;
@@ -11,6 +12,8 @@ import com.lia.common.mysql.FieldModel;
 public class Inventory extends CommonObject {
    
    
+   public Inventory() { }
+
    public Inventory(){
       
    }
@@ -83,46 +86,19 @@ public class Inventory extends CommonObject {
    @Override
    public ArrayList<String> fetchPropertyName(){
       ArrayList<String> fieldNameList = new ArrayList<String>();
-      fieldNameList.add("SetID");
-      fieldNameList.add("Number");
-      fieldNameList.add("Variant");
-      fieldNameList.add("Theme");
-      fieldNameList.add("SubTheme");
-      fieldNameList.add("Year");
-      fieldNameList.add("Name");
-      fieldNameList.add("Minifigs");
-      fieldNameList.add("Pieces");
-      fieldNameList.add("PriceUK");
-      fieldNameList.add("PriceUS");
-      fieldNameList.add("PriceCA");
-      fieldNameList.add("PriceEU");
-      fieldNameList.add("ImageURL");
+      
       return fieldNameList;
    }
    
    @Override
    public Object[] fetchObject() {
       Object[] obj = new Object[0];
-      obj[0] = this._setID;
-      obj[1] = this._number;
-      obj[2] = this._variant;
-      obj[3] = this._theme;
-      obj[4] = this._subTheme;
-      obj[5] = this._year;
-      obj[6] = this._name;
-      obj[7] = this._minifigs;
-      obj[8] = this._pieces;
-      obj[9] = this._priceUK;
-      obj[10] = this._priceUS;
-      obj[11] = this._priceCA;
-      obj[12] = this._priceEU;
-      obj[13] = this._imageURL;
       
       return obj;
    }
 
    @Override
    public String fetchDescription() {
-      return String.format("%s(%s)", this._number, this._name);
+      return String.format("%s(%s)", this._name);
    }
 }

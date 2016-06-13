@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.lia.common.CommonObject;
 import com.lia.common.mysql.FieldModel;
@@ -17,6 +18,8 @@ public class Brick extends CommonObject {
    private String _imageURL = "";
 
    
+   public Brick() { }
+
    public Brick(String elementID,
                 String designID,
                 UUID colorKey,
@@ -33,60 +36,60 @@ public class Brick extends CommonObject {
    
    public Brick(CommonObject commonObject){
       Object[] object = commonObject.fetchObject();
-      this._elementID = ConvertToString(object[0]);
-      this._designID = ConvertToString(object[1]);
-      this._colorKey = ConvertToUUID(object[2]);
-      this._categoryKey = ConvertToUUID(object[3]);
-      this._name = ConvertToString(object[4]);
-      this._imageURL = ConvertToString(object[5]);
+      this._elementID = convertToString(object[0]);
+      this._designID = convertToString(object[1]);
+      this._colorKey = convertToUUID(object[2]);
+      this._categoryKey = convertToUUID(object[3]);
+      this._name = convertToString(object[4]);
+      this._imageURL = convertToString(object[5]);
    }
    
    public String getElementID() {
-      return _elementID;
+      return this._elementID;
    }
 
    public void setElementID(String elementID) {
-      this._elementID = elementID
+      this._elementID = elementID;
    }
 
    public String getDesignID() {
-      return _designID;
+      return this._designID;
    }
 
    public void setDesignID(String designID) {
-      this._designID = designID
+      this._designID = designID;
    }
 
    public UUID getColorKey() {
-      return _colorKey;
+      return this._colorKey;
    }
 
    public void setColorKey(UUID colorKey) {
-      this._colorKey = colorKey
+      this._colorKey = colorKey;
    }
 
    public UUID getCategoryKey() {
-      return _categoryKey;
+      return this._categoryKey;
    }
 
    public void setCategoryKey(UUID categoryKey) {
-      this._categoryKey = categoryKey
+      this._categoryKey = categoryKey;
    }
 
    public String getName() {
-      return _name;
+      return this._name;
    }
 
    public void setName(String name) {
-      this._name = name
+      this._name = name;
    }
 
    public String getImageURL() {
-      return _imageURL;
+      return this._imageURL;
    }
 
    public void setImageURL(String imageURL) {
-      this._imageURL = imageURL
+      this._imageURL = imageURL;
    }
 
 
@@ -128,10 +131,10 @@ public class Brick extends CommonObject {
          this._designID = fieldValue;
          break;
       case "ColorKey":
-         this._colorKey = ConvertToUUID(fieldValue);
+         this._colorKey = convertToUUID(fieldValue);
          break;
       case "CategoryKey":
-         this._categoryKey = ConvertToUUID(fieldValue);
+         this._categoryKey = convertToUUID(fieldValue);
          break;
       case "Name":
          this._name = fieldValue;
@@ -154,12 +157,12 @@ public class Brick extends CommonObject {
    
    public Map<String, FieldModel> exportModel(){
       Map<String, FieldModel> modelMap = new HashMap<String, FieldModel>();
-      modelMap.put("ElementID", new FieldModel("String", this._elementID, false));
-      modelMap.put("DesignID", new FieldModel("String", this._designID, false));
-      modelMap.put("ColorKey", new FieldModel("UUID", this._colorKey, false));
-      modelMap.put("CategoryKey", new FieldModel("UUID", this._categoryKey, false));
-      modelMap.put("Name", new FieldModel("String", this._name, false));
-      modelMap.put("ImageURL", new FieldModel("String", this._imageURL, false));
+      modelMap.put("ElementID", new FieldModel("String", this._elementID.toString(), false));
+      modelMap.put("DesignID", new FieldModel("String", this._designID.toString(), false));
+      modelMap.put("ColorKey", new FieldModel("UUID", this._colorKey.toString(), false));
+      modelMap.put("CategoryKey", new FieldModel("UUID", this._categoryKey.toString(), false));
+      modelMap.put("Name", new FieldModel("String", this._name.toString(), false));
+      modelMap.put("ImageURL", new FieldModel("String", this._imageURL.toString(), false));
 
       return modelMap;
    }
@@ -169,8 +172,8 @@ public class Brick extends CommonObject {
       Map<String, String> modelMap = new HashMap<String, String>();
       modelMap.put("ElementID", getPropertyValueString(this._elementID));
       modelMap.put("DesignID", getPropertyValueString(this._designID));
-      modelMap.put("ColorKey", getPropertyValueUUID(this._colorKey));
-      modelMap.put("CategoryKey", getPropertyValueUUID(this._categoryKey));
+      modelMap.put("ColorKey", getPropertyValueString(this._colorKey));
+      modelMap.put("CategoryKey", getPropertyValueString(this._categoryKey));
       modelMap.put("Name", getPropertyValueString(this._name));
       modelMap.put("ImageURL", getPropertyValueString(this._imageURL));
 
@@ -189,8 +192,8 @@ public class Brick extends CommonObject {
       Map<String, String> modelMap = new HashMap<String, String>();
       modelMap.put("ElementID", getPropertyValueString(this._elementID));
       modelMap.put("DesignID", getPropertyValueString(this._designID));
-      modelMap.put("ColorKey", getPropertyValueUUID(this._colorKey));
-      modelMap.put("CategoryKey", getPropertyValueUUID(this._categoryKey));
+      modelMap.put("ColorKey", getPropertyValueString(this._colorKey));
+      modelMap.put("CategoryKey", getPropertyValueString(this._categoryKey));
       modelMap.put("Name", getPropertyValueString(this._name));
       modelMap.put("ImageURL", getPropertyValueString(this._imageURL));
 
@@ -200,46 +203,31 @@ public class Brick extends CommonObject {
    @Override
    public ArrayList<String> fetchPropertyName(){
       ArrayList<String> fieldNameList = new ArrayList<String>();
-      fieldNameList.add("SetID");
-      fieldNameList.add("Number");
-      fieldNameList.add("Variant");
-      fieldNameList.add("Theme");
-      fieldNameList.add("SubTheme");
-      fieldNameList.add("Year");
+      fieldNameList.add("ElementID");
+      fieldNameList.add("DesignID");
+      fieldNameList.add("ColorKey");
+      fieldNameList.add("CategoryKey");
       fieldNameList.add("Name");
-      fieldNameList.add("Minifigs");
-      fieldNameList.add("Pieces");
-      fieldNameList.add("PriceUK");
-      fieldNameList.add("PriceUS");
-      fieldNameList.add("PriceCA");
-      fieldNameList.add("PriceEU");
       fieldNameList.add("ImageURL");
+
       return fieldNameList;
    }
    
    @Override
    public Object[] fetchObject() {
       Object[] obj = new Object[6];
-      obj[0] = this._setID;
-      obj[1] = this._number;
-      obj[2] = this._variant;
-      obj[3] = this._theme;
-      obj[4] = this._subTheme;
-      obj[5] = this._year;
-      obj[6] = this._name;
-      obj[7] = this._minifigs;
-      obj[8] = this._pieces;
-      obj[9] = this._priceUK;
-      obj[10] = this._priceUS;
-      obj[11] = this._priceCA;
-      obj[12] = this._priceEU;
-      obj[13] = this._imageURL;
-      
+      obj[0] = this._elementID;
+      obj[1] = this._designID;
+      obj[2] = this._colorKey;
+      obj[3] = this._categoryKey;
+      obj[4] = this._name;
+      obj[5] = this._imageURL;
+
       return obj;
    }
 
    @Override
    public String fetchDescription() {
-      return String.format("%s(%s)", this._number, this._name);
+      return String.format("%s(%s)", this._name);
    }
 }

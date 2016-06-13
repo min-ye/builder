@@ -5,7 +5,6 @@
 <hibernate-mapping package="com.lia.lego.model">
    <class name="Set" table="Set">
       <id name="SetID" column="SetID" type="string" length="16"></id>
-      <property name="SetID" column="SetID" type="string" length="16"></property>
       <property name="Number" column="Number" type="string" length="16"></property>
       <property name="Variant" column="Variant" type="string" length="8"></property>
       <property name="Theme" column="Theme" type="string" length="128"></property>

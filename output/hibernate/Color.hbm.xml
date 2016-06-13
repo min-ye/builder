@@ -6,7 +6,6 @@
    <class name="Color" table="Color">
       <id name="Key" column="`Key`" type="org.hibernate.type.UUIDCharType"></id>
       <property name="Name" column="Name" type="string" length="128"></property>
-      <property name="Key" column="Key" type="org.hibernate.type.UUIDCharType"></property>
 
    </class>
 </hibernate-mapping>

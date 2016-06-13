@@ -61,6 +61,7 @@ public class Console {
          option.put(1, "Entity");
          option.put(2, "Field");
          option.put(3, "Output");
+         option.put(5, "Output All");
          do {
             try {
                choice = readStringChoose(option);
@@ -77,6 +78,9 @@ public class Console {
                break;
             case 3:
                handleOutput();
+               break;
+            case 5:
+               handleOutputAll();
                break;
             }
          } while (choice != 0);
@@ -218,6 +222,26 @@ public class Console {
       FileHelper.INSTANCE.saveContent(script, fileName);
    }
    
+   private static void handleOutputAll() throws Exception{
+      for (CommonObject obj : _entityList) {
+         Entity entity = (Entity)obj;
+         List<CommonObject> fieldList = getFieldList(entity);
+         OutputHandler handler = OutputHandlerFactory.createHandler(CreateModelClassHandler.class);
+         String script = handler.run(entity, fieldList);
+         String fileName = getModelOutputFileName(entity);
+         FileHelper.INSTANCE.saveContent(script, fileName);
+         handler = OutputHandlerFactory.createHandler(CreateMySQLTableHandler.class);
+         script = handler.run(entity, fieldList);
+         fileName = getMySQLTableOutputFileName(entity);
+         FileHelper.INSTANCE.saveContent(script, fileName);
+         handler = OutputHandlerFactory.createHandler(CreateHibernateHandler.class);
+         script = handler.run(entity, fieldList);
+         fileName = getHibernateOutputFileName(entity);
+         FileHelper.INSTANCE.saveContent(script, fileName);
+         
+      }
+   }
+   
    private static String readLine(String prompt) throws IOException, CancelInputException{
       String input = "";
       if (ide){
@@ -354,17 +378,21 @@ public class Console {
       SelectHandler handler = SelectHandlerFactory.createHandler(SelectHandler.class);
       _entity = handler.select(_entityList, _iic);
       
-      _fieldList = new ArrayList<CommonObject>();
-      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
+      _fieldList = getFieldList(_entity);
       
-      String fieldJsonFileName = String.format("%s%s.json", folder, _entity.getPropertyValue("Key"));
+   }
+   
+   private static List<CommonObject> getFieldList(CommonObject entity) throws Exception{
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "data_folder");
+      List<CommonObject> fieldList = new ArrayList<CommonObject>();
+      String fieldJsonFileName = String.format("%s%s.json", folder, entity.getPropertyValue("Key"));
       File file = new File(fieldJsonFileName);
       if (file.exists()) {
-         
          for (Map<String, String> field : JsonHelper.INSTANCE.readJson(fieldJsonFileName)){
-            _fieldList.add(new Field(field));
+            fieldList.add(new Field(field));
          }
       }
+      return fieldList;
    }
    
    private static void saveEntity() throws Exception{

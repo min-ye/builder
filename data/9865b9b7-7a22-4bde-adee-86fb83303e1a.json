@@ -19,7 +19,7 @@
       "fieldName": "Quantity",
       "size": 0,
       "allowNull": false,
-      "type": "Int",
+      "type": "Integer",
       "key": "ad4715a8-c472-48d2-a69d-678802139341",
       "primary": false
    }

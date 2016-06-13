@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.lia.common.CommonObject;
 import com.lia.common.mysql.FieldModel;
@@ -11,12 +12,14 @@ import com.lia.common.mysql.FieldModel;
 public class Inventory extends CommonObject {
    private UUID _setKey = null;
    private UUID _brickKey = null;
-   private Int _quantity = 0;
+   private Integer _quantity = 0;
 
    
+   public Inventory() { }
+
    public Inventory(UUID setKey,
                     UUID brickKey,
-                    Int quantity){
+                    Integer quantity){
       this._setKey = setKey;
       this._brickKey = brickKey;
       this._quantity = quantity;
@@ -24,33 +27,33 @@ public class Inventory extends CommonObject {
    
    public Inventory(CommonObject commonObject){
       Object[] object = commonObject.fetchObject();
-      this._setKey = ConvertToUUID(object[0]);
-      this._brickKey = ConvertToUUID(object[1]);
-      this._quantity = ConvertToInt(object[2]);
+      this._setKey = convertToUUID(object[0]);
+      this._brickKey = convertToUUID(object[1]);
+      this._quantity = convertToInteger(object[2]);
    }
    
    public UUID getSetKey() {
-      return _setKey;
+      return this._setKey;
    }
 
    public void setSetKey(UUID setKey) {
-      this._setKey = setKey
+      this._setKey = setKey;
    }
 
    public UUID getBrickKey() {
-      return _brickKey;
+      return this._brickKey;
    }
 
    public void setBrickKey(UUID brickKey) {
-      this._brickKey = brickKey
+      this._brickKey = brickKey;
    }
 
-   public Int getQuantity() {
-      return _quantity;
+   public Integer getQuantity() {
+      return this._quantity;
    }
 
-   public void setQuantity(Int quantity) {
-      this._quantity = quantity
+   public void setQuantity(Integer quantity) {
+      this._quantity = quantity;
    }
 
 
@@ -80,13 +83,13 @@ public class Inventory extends CommonObject {
    {
       switch (fieldName) {
       case "SetKey":
-         this._setKey = ConvertToUUID(fieldValue);
+         this._setKey = convertToUUID(fieldValue);
          break;
       case "BrickKey":
-         this._brickKey = ConvertToUUID(fieldValue);
+         this._brickKey = convertToUUID(fieldValue);
          break;
       case "Quantity":
-         this._quantity = ConvertToInt(fieldValue);
+         this._quantity = convertToInteger(fieldValue);
          break;
 
       default:
@@ -103,9 +106,9 @@ public class Inventory extends CommonObject {
    
    public Map<String, FieldModel> exportModel(){
       Map<String, FieldModel> modelMap = new HashMap<String, FieldModel>();
-      modelMap.put("SetKey", new FieldModel("UUID", this._setKey, false));
-      modelMap.put("BrickKey", new FieldModel("UUID", this._brickKey, false));
-      modelMap.put("Quantity", new FieldModel("Int", this._quantity, false));
+      modelMap.put("SetKey", new FieldModel("UUID", this._setKey.toString(), false));
+      modelMap.put("BrickKey", new FieldModel("UUID", this._brickKey.toString(), false));
+      modelMap.put("Quantity", new FieldModel("Integer", this._quantity.toString(), false));
 
       return modelMap;
    }
@@ -113,9 +116,9 @@ public class Inventory extends CommonObject {
    @Override
    public Map<String, String> exportPropertyMap(){
       Map<String, String> modelMap = new HashMap<String, String>();
-      modelMap.put("SetKey", getPropertyValueUUID(this._setKey));
-      modelMap.put("BrickKey", getPropertyValueUUID(this._brickKey));
-      modelMap.put("Quantity", getPropertyValueInt(this._quantity));
+      modelMap.put("SetKey", getPropertyValueString(this._setKey));
+      modelMap.put("BrickKey", getPropertyValueString(this._brickKey));
+      modelMap.put("Quantity", getPropertyValueString(this._quantity));
 
       return modelMap;
    }
@@ -130,9 +133,9 @@ public class Inventory extends CommonObject {
    @Override
    public Map<String, String> exportValuePropertyMap(){
       Map<String, String> modelMap = new HashMap<String, String>();
-      modelMap.put("SetKey", getPropertyValueUUID(this._setKey));
-      modelMap.put("BrickKey", getPropertyValueUUID(this._brickKey));
-      modelMap.put("Quantity", getPropertyValueInt(this._quantity));
+      modelMap.put("SetKey", getPropertyValueString(this._setKey));
+      modelMap.put("BrickKey", getPropertyValueString(this._brickKey));
+      modelMap.put("Quantity", getPropertyValueString(this._quantity));
 
       return modelMap;
    }
@@ -140,46 +143,25 @@ public class Inventory extends CommonObject {
    @Override
    public ArrayList<String> fetchPropertyName(){
       ArrayList<String> fieldNameList = new ArrayList<String>();
-      fieldNameList.add("SetID");
-      fieldNameList.add("Number");
-      fieldNameList.add("Variant");
-      fieldNameList.add("Theme");
-      fieldNameList.add("SubTheme");
-      fieldNameList.add("Year");
-      fieldNameList.add("Name");
-      fieldNameList.add("Minifigs");
-      fieldNameList.add("Pieces");
-      fieldNameList.add("PriceUK");
-      fieldNameList.add("PriceUS");
-      fieldNameList.add("PriceCA");
-      fieldNameList.add("PriceEU");
-      fieldNameList.add("ImageURL");
+      fieldNameList.add("SetKey");
+      fieldNameList.add("BrickKey");
+      fieldNameList.add("Quantity");
+
       return fieldNameList;
    }
    
    @Override
    public Object[] fetchObject() {
       Object[] obj = new Object[3];
-      obj[0] = this._setID;
-      obj[1] = this._number;
-      obj[2] = this._variant;
-      obj[3] = this._theme;
-      obj[4] = this._subTheme;
-      obj[5] = this._year;
-      obj[6] = this._name;
-      obj[7] = this._minifigs;
-      obj[8] = this._pieces;
-      obj[9] = this._priceUK;
-      obj[10] = this._priceUS;
-      obj[11] = this._priceCA;
-      obj[12] = this._priceEU;
-      obj[13] = this._imageURL;
-      
+      obj[0] = this._setKey;
+      obj[1] = this._brickKey;
+      obj[2] = this._quantity;
+
       return obj;
    }
 
    @Override
    public String fetchDescription() {
-      return String.format("%s(%s)", this._number, this._name);
+      return String.format("%s(%s)", this._name);
    }
 }

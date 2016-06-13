@@ -120,7 +120,7 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          String indent = "\r\n" + getTab(2);
          output += (output.length() > 0? indent : "");
-         String variable = String.format("this.%s = ConvertTo%s(object[%d]);", getPrivateVariableName(field.getFieldName()), field.getType(), index);
+         String variable = String.format("this.%s = convertTo%s(object[%d]);", getPrivateVariableName(field.getFieldName()), field.getType(), index);
          
          output += variable;
          index++;
@@ -136,14 +136,14 @@ public class CreateModelClassHandler extends OutputHandler {
          output += (output.length() > 0? getTab(1) : "");
          output += String.format("public %s get%s() {", field.getType(), field.getFieldName());
          output += "\r\n";
-         output += String.format("%sreturn %s;", getTab(2), getPrivateVariableName(field.getFieldName()));
+         output += String.format("%sreturn this.%s;", getTab(2), getPrivateVariableName(field.getFieldName()));
          output += "\r\n";
          output += String.format("%s}", getTab(1));
          output += "\r\n";
          output += "\r\n";
          output += String.format("%spublic void set%s(%s %s) {", getTab(1), field.getFieldName(), field.getType(), getVariableName(field.getFieldName()));
          output += "\r\n";
-         output += String.format("%sthis.%s = %s", getTab(2), getPrivateVariableName(field.getFieldName()), getVariableName(field.getFieldName()));
+         output += String.format("%sthis.%s = %s;", getTab(2), getPrivateVariableName(field.getFieldName()), getVariableName(field.getFieldName()));
          output += "\r\n";
          output += String.format("%s}", getTab(1));
          output += "\r\n";
@@ -176,7 +176,7 @@ public class CreateModelClassHandler extends OutputHandler {
             output += String.format("%sthis.%s = fieldValue;", getTab(3), getPrivateVariableName(field.getFieldName()));
          }
          else {
-            output += String.format("%sthis.%s = ConvertTo%s(fieldValue);", getTab(3), getPrivateVariableName(field.getFieldName()), field.getType());
+            output += String.format("%sthis.%s = convertTo%s(fieldValue);", getTab(3), getPrivateVariableName(field.getFieldName()), field.getType());
          }
          output += "\r\n";
          output += String.format("%sbreak;", getTab(3));
@@ -191,7 +191,7 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          output += (output.length() > 0? getTab(2) : "");
          String fieldName = field.getFieldName();
-         output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s, %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s.toString(), %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
          output += "\r\n";
       }
       return output;
@@ -203,7 +203,7 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          output += (output.length() > 0? getTab(2) : "");
          String fieldName = field.getFieldName();
-         output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
+         output += String.format("modelMap.put(\"%s\", getPropertyValueString(this.%s));", fieldName, getPrivateVariableName(fieldName));
          output += "\r\n";
       }
       return output;
@@ -216,7 +216,7 @@ public class CreateModelClassHandler extends OutputHandler {
          if (field.isPrimary()) {
             output += (output.length() > 0? getTab(2) : "");
             String fieldName = field.getFieldName();
-            output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
+            output += String.format("modelMap.put(\"%s\", getPropertyValueString(this.%s));", fieldName, getPrivateVariableName(fieldName));
             output += "\r\n";
          }
       }
@@ -230,7 +230,7 @@ public class CreateModelClassHandler extends OutputHandler {
          if (!field.isPrimary()) {
             output += (output.length() > 0? getTab(2) : "");
             String fieldName = field.getFieldName();
-            output += String.format("modelMap.put(\"%s\", getPropertyValue%s(this.%s));", fieldName, field.getType(), getPrivateVariableName(fieldName));
+            output += String.format("modelMap.put(\"%s\", getPropertyValueString(this.%s));", fieldName, getPrivateVariableName(fieldName));
             output += "\r\n";
          }
       }
@@ -241,12 +241,12 @@ public class CreateModelClassHandler extends OutputHandler {
       String output = "";
       for (CommonObject obj : fieldList) {
          Field field = (Field) obj;
-         if (!field.isPrimary()) {
-            output += (output.length() > 0? getTab(2) : "");
-            String fieldName = field.getFieldName();
-            output += String.format("fieldNameList.add(\"%s\");", fieldName);
-            output += "\r\n";
-         }
+         
+         output += (output.length() > 0? getTab(2) : "");
+         String fieldName = field.getFieldName();
+         output += String.format("fieldNameList.add(\"%s\");", fieldName);
+         output += "\r\n";
+         
       }
       return output;
    }
@@ -256,13 +256,13 @@ public class CreateModelClassHandler extends OutputHandler {
       int index = 0;
       for (CommonObject obj : fieldList) {
          Field field = (Field) obj;
-         if (!field.isPrimary()) {
-            output += (output.length() > 0? getTab(2) : "");
-            String fieldName = field.getFieldName();
-            output += String.format("obj[%d] = this.%s;", index, getPrivateVariableName(fieldName));
-            output += "\r\n";
-            index ++;
-         }
+         
+         output += (output.length() > 0? getTab(2) : "");
+         String fieldName = field.getFieldName();
+         output += String.format("obj[%d] = this.%s;", index, getPrivateVariableName(fieldName));
+         output += "\r\n";
+         index ++;
+         
       }
       return output;
    }

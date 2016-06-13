@@ -11,7 +11,7 @@
       "fieldName": "Variant",
       "size": 0,
       "allowNull": true,
-      "type": "Int",
+      "type": "Integer",
       "key": "0190067a-d083-44f1-8976-4859b9d43e6f",
       "primary": false
    },
@@ -51,7 +51,7 @@
       "fieldName": "Piece",
       "size": 0,
       "allowNull": true,
-      "type": "Int",
+      "type": "Integer",
       "key": "be89bcbd-401c-430b-9671-9dd00cf07fae",
       "primary": false
    },

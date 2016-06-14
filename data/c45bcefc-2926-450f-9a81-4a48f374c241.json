@@ -1,0 +1,74 @@
+[
+   {
+      "fieldName": "SetNumber",
+      "size": 16,
+      "allowNull": false,
+      "type": "String",
+      "key": "10c8de2f-3e7c-4f5b-a1f6-0266664633c8",
+      "primary": true
+   },
+   {
+      "fieldName": "PartID",
+      "size": 16,
+      "allowNull": false,
+      "type": "String",
+      "key": "2b5dc07c-bbf5-4da8-93a2-d33b78daaf8d",
+      "primary": true
+   },
+   {
+      "fieldName": "Quantity",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "925c900b-a537-4417-bce6-bd21b71ab5e8",
+      "primary": false
+   },
+   {
+      "fieldName": "Colour",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "5c0a7247-82f9-43c2-a1c1-7ce8989da7d9",
+      "primary": false
+   },
+   {
+      "fieldName": "Category",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "f5f5a924-a8aa-424f-94b6-99cd52d62f21",
+      "primary": false
+   },
+   {
+      "fieldName": "DesignID",
+      "size": 16,
+      "allowNull": true,
+      "type": "String",
+      "key": "727910e6-6d42-4e80-8292-ec2a3fd7c748",
+      "primary": false
+   },
+   {
+      "fieldName": "PartName",
+      "size": 128,
+      "allowNull": true,
+      "type": "String",
+      "key": "5a54c424-03c3-4bbf-af74-b6a5178e85b2",
+      "primary": false
+   },
+   {
+      "fieldName": "ImageURL",
+      "size": 256,
+      "allowNull": true,
+      "type": "String",
+      "key": "152bf415-3109-47e6-ab5f-028e264322b6",
+      "primary": false
+   },
+   {
+      "fieldName": "SetCount",
+      "size": 8,
+      "allowNull": true,
+      "type": "String",
+      "key": "e2343472-53a0-47db-a877-918d7f8c2f34",
+      "primary": false
+   }
+]

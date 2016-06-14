@@ -120,6 +120,7 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          String indent = "\r\n" + getTab(2);
          output += (output.length() > 0? indent : "");
+         
          String variable = String.format("this.%s = convertTo%s(object[%d]);", getPrivateVariableName(field.getFieldName()), field.getType(), index);
          
          output += variable;
@@ -159,7 +160,12 @@ public class CreateModelClassHandler extends OutputHandler {
          output += (output.length() > 0? getTab(2) : "");
          output += String.format("case \"%s\":", field.getFieldName());
          output += "\r\n";
-         output += String.format("%sreturn this.%s.toString();", getTab(3), getPrivateVariableName(field.getFieldName()));
+         if (field.getType().toLowerCase().equals("string")) {
+            output += String.format("%sreturn this.%s;", getTab(3), getPrivateVariableName(field.getFieldName()));
+         }
+         else {
+            output += String.format("%sreturn this.%s.toString();", getTab(3), getPrivateVariableName(field.getFieldName()));
+         }
          output += "\r\n";
       }
       return output;
@@ -191,7 +197,12 @@ public class CreateModelClassHandler extends OutputHandler {
          Field field = (Field) obj;
          output += (output.length() > 0? getTab(2) : "");
          String fieldName = field.getFieldName();
-         output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s.toString(), %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         if (field.getType().toLowerCase().equals("string")) {
+            output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s, %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         }
+         else {
+            output += String.format("modelMap.put(\"%s\", new FieldModel(\"%s\", this.%s.toString(), %b));", fieldName, field.getType(), getPrivateVariableName(fieldName), field.isPrimary());
+         }
          output += "\r\n";
       }
       return output;

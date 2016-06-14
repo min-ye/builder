@@ -5,7 +5,7 @@
       "allowNull": false,
       "type": "UUID",
       "key": "dfd060f7-587a-4011-b972-c064c9dd3d80",
-      "primary": false
+      "primary": true
    },
    {
       "fieldName": "BrickKey",
@@ -13,7 +13,7 @@
       "allowNull": false,
       "type": "UUID",
       "key": "8b266843-5a5f-4945-bb5c-e2262e410683",
-      "primary": false
+      "primary": true
    },
    {
       "fieldName": "Quantity",

@@ -56,6 +56,7 @@ public class CreateHibernateHandler extends OutputHandler {
             else {
                output += String.format("<id name=\"%s\" column=\"%s\" type=\"%s\"></id>", fieldName, getColumnName(fieldName), getHibernateTypeName(field.getType()));
             }
+            output += "\r\n";
          }
       }
       return output;

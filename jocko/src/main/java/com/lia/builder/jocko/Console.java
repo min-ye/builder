@@ -220,6 +220,10 @@ public class Console {
       script = handler.run(_entity, _fieldList);
       fileName = getHibernateOutputFileName(_entity);
       FileHelper.INSTANCE.saveContent(script, fileName);
+      handler = OutputHandlerFactory.createHandler(CreateBusinessClassHandler.class);
+      script = handler.run(_entity, _fieldList);
+      fileName = getBusinessClassOutputFileName(_entity);
+      FileHelper.INSTANCE.saveContent(script, fileName);
    }
    
    private static void handleOutputAll() throws Exception{
@@ -238,7 +242,10 @@ public class Console {
          script = handler.run(entity, fieldList);
          fileName = getHibernateOutputFileName(entity);
          FileHelper.INSTANCE.saveContent(script, fileName);
-         
+         handler = OutputHandlerFactory.createHandler(CreateBusinessClassHandler.class);
+         script = handler.run(entity, fieldList);
+         fileName = getBusinessClassOutputFileName(entity);
+         FileHelper.INSTANCE.saveContent(script, fileName);
       }
    }
    
@@ -416,7 +423,7 @@ public class Console {
       Entity entityObject = (Entity) entity;
       String packageFolder = entityObject.getPackageName();
       packageFolder = packageFolder.replace(".", "/");
-      String output = String.format("%s%s/%s.java", folder, packageFolder, entityObject.getClassName());
+      String output = String.format("%s%s/model/%s.java", folder, packageFolder, entityObject.getClassName());
       return output;
    }
    
@@ -432,5 +439,15 @@ public class Console {
       Entity entityObject = (Entity) entity;
       String output = String.format("%s%s/%s.hbm.xml", folder, "hibernate", entityObject.getTableName());
       return output;
+   }
+   
+   private static String getBusinessClassOutputFileName(CommonObject entity) throws Exception {
+      String folder = Profile.INSTANCE.getConfigValue(getConfigFile(), "output_folder");
+      Entity entityObject = (Entity) entity;
+      String packageFolder = entityObject.getPackageName();
+      packageFolder = packageFolder.replace(".", "/");
+      String output = String.format("%s%s/business/%sController.java", folder, packageFolder, entityObject.getClassName());
+      return output;
+      
    }
 }

@@ -3,4 +3,4 @@ CREATE TABLE `lego`.`Inventory` (
    `BrickKey` VARCHAR(36) NOT NULL,
    `Quantity` SMALLINT NOT NULL,
 
-   PRIMARY KEY ());
+   PRIMARY KEY (`SetKey`,`BrickKey`));

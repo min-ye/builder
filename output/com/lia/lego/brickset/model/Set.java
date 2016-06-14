@@ -1,4 +1,4 @@
-package com.lia.lego.model.brickset;
+package com.lia.lego.brickset.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -199,33 +199,33 @@ public class Set extends CommonObject {
    public String getPropertyValue(String fieldName) throws Exception{
       switch (fieldName){
       case "SetID":
-         return this._setID.toString();
+         return this._setID;
       case "Number":
-         return this._number.toString();
+         return this._number;
       case "Variant":
-         return this._variant.toString();
+         return this._variant;
       case "Theme":
-         return this._theme.toString();
+         return this._theme;
       case "SubTheme":
-         return this._subTheme.toString();
+         return this._subTheme;
       case "Year":
-         return this._year.toString();
+         return this._year;
       case "Name":
-         return this._name.toString();
+         return this._name;
       case "Minifigs":
-         return this._minifigs.toString();
+         return this._minifigs;
       case "Pieces":
-         return this._pieces.toString();
+         return this._pieces;
       case "PriceUK":
-         return this._priceUK.toString();
+         return this._priceUK;
       case "PriceUS":
-         return this._priceUS.toString();
+         return this._priceUS;
       case "PriceCA":
-         return this._priceCA.toString();
+         return this._priceCA;
       case "PriceEU":
-         return this._priceEU.toString();
+         return this._priceEU;
       case "ImageURL":
-         return this._imageURL.toString();
+         return this._imageURL;
 
       default:
          throw new Exception(String.format("Unknown Field Name:[%s]", fieldName));
@@ -293,20 +293,20 @@ public class Set extends CommonObject {
    
    public Map<String, FieldModel> exportModel(){
       Map<String, FieldModel> modelMap = new HashMap<String, FieldModel>();
-      modelMap.put("SetID", new FieldModel("String", this._setID.toString(), true));
-      modelMap.put("Number", new FieldModel("String", this._number.toString(), false));
-      modelMap.put("Variant", new FieldModel("String", this._variant.toString(), false));
-      modelMap.put("Theme", new FieldModel("String", this._theme.toString(), false));
-      modelMap.put("SubTheme", new FieldModel("String", this._subTheme.toString(), false));
-      modelMap.put("Year", new FieldModel("String", this._year.toString(), false));
-      modelMap.put("Name", new FieldModel("String", this._name.toString(), false));
-      modelMap.put("Minifigs", new FieldModel("String", this._minifigs.toString(), false));
-      modelMap.put("Pieces", new FieldModel("String", this._pieces.toString(), false));
-      modelMap.put("PriceUK", new FieldModel("String", this._priceUK.toString(), false));
-      modelMap.put("PriceUS", new FieldModel("String", this._priceUS.toString(), false));
-      modelMap.put("PriceCA", new FieldModel("String", this._priceCA.toString(), false));
-      modelMap.put("PriceEU", new FieldModel("String", this._priceEU.toString(), false));
-      modelMap.put("ImageURL", new FieldModel("String", this._imageURL.toString(), false));
+      modelMap.put("SetID", new FieldModel("String", this._setID, true));
+      modelMap.put("Number", new FieldModel("String", this._number, false));
+      modelMap.put("Variant", new FieldModel("String", this._variant, false));
+      modelMap.put("Theme", new FieldModel("String", this._theme, false));
+      modelMap.put("SubTheme", new FieldModel("String", this._subTheme, false));
+      modelMap.put("Year", new FieldModel("String", this._year, false));
+      modelMap.put("Name", new FieldModel("String", this._name, false));
+      modelMap.put("Minifigs", new FieldModel("String", this._minifigs, false));
+      modelMap.put("Pieces", new FieldModel("String", this._pieces, false));
+      modelMap.put("PriceUK", new FieldModel("String", this._priceUK, false));
+      modelMap.put("PriceUS", new FieldModel("String", this._priceUS, false));
+      modelMap.put("PriceCA", new FieldModel("String", this._priceCA, false));
+      modelMap.put("PriceEU", new FieldModel("String", this._priceEU, false));
+      modelMap.put("ImageURL", new FieldModel("String", this._imageURL, false));
 
       return modelMap;
    }

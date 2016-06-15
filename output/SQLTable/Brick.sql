@@ -5,5 +5,6 @@ CREATE TABLE `lego`.`Brick` (
    `CategoryKey` VARCHAR(36) NULL,
    `Name` VARCHAR(128) NULL,
    `ImageURL` VARCHAR(256) NULL,
+   `Key` VARCHAR(36) NOT NULL,
 
-   PRIMARY KEY ());
+   PRIMARY KEY (`Key`));

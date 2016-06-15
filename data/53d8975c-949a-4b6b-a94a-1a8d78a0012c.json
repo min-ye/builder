@@ -46,5 +46,13 @@
       "type": "String",
       "key": "afd30c0c-e60a-4397-ab24-34ce36f7ab47",
       "primary": false
+   },
+   {
+      "fieldName": "Key",
+      "size": 0,
+      "allowNull": false,
+      "type": "UUID",
+      "key": "f129d594-4404-4712-a3d3-e6c721a7f1ad",
+      "primary": true
    }
 ]

@@ -103,7 +103,7 @@ public class SubThemeController implements Controller{
          Session session = null;
          try {
             session = factory.openSession();
-            String hql="from com.lia.lego.SubTheme as s where s.Key=:key";//使用命名参数，推荐使用，易读。
+            String hql="from com.lia.lego.SubTheme as s where s.Key=:key";//ä½¿ç”¨å‘½å��å�‚æ•°ï¼ŒæŽ¨è��ä½¿ç”¨ï¼Œæ˜“è¯»ã€‚
             Query query=session.createQuery(hql);
             query.setString("key", key.toString());
             

@@ -1,4 +1,4 @@
 {
-   data_folder: 'C:\\Users\\mye\\workspace\\builder\\data\\',
-   output_folder: 'C:\\Users\\mye\\workspace\\builder\\output\\'
+   data_folder: '/Users/yemin/workspace/builder/data/',
+   output_folder: '/Users/yemin/workspace/builder/output/'
 }

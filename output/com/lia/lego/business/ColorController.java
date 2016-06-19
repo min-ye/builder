@@ -103,7 +103,7 @@ public class ColorController implements Controller{
          Session session = null;
          try {
             session = factory.openSession();
-            String hql="from com.lia.lego.Color as c where c.Key=:key";//使用命名参数，推荐使用，易读。
+            String hql="from com.lia.lego.Color as c where c.Key=:key";
             Query query=session.createQuery(hql);
             query.setString("key", key.toString());
             
@@ -162,21 +162,47 @@ public class ColorController implements Controller{
       return output;
    }
 
-   public void deleteInSession(Session session, CommonObject obj) {
+   public void delete(Session session, CommonObject obj) {
       Color color = (Color) obj;
       session.delete(color);
    }
 
-   public void createInSession(Session session, CommonObject obj) {
+   public void create(Session session, CommonObject obj) {
       Color color = (Color) obj;
       session.save(color);
       
    }
 
-   public void updateInSession(Session session, CommonObject obj) {
+   public void update(Session session, CommonObject obj) {
+
       Color color = (Color) obj;
       session.update(color);
       
+   }
+
+   public CommonObject retrieveAccordingKey(Session session, UUID key) {
+      CommonObject output = null;
+      String hql="from com.lia.lego.Color as c where c.Key=:key";
+      Query query=session.createQuery(hql);
+      query.setString("key", key.toString());
+      
+      List<Color> colorList = query.list();
+      if (colorList.size() > 0){
+         output = colorList.get(0);
+      }
+      return output;
+   }
+
+   public List<CommonObject> retrieve(Session session) {
+      List<CommonObject> output = new ArrayList<CommonObject>();
+      String hql="from com.lia.lego.Color";
+      Query query=session.createQuery(hql);
+
+      List<Color> colorList = query.list();
+      for (Color color : colorList) {
+         output.add(color);
+      }
+      return output;
    }
 
 }

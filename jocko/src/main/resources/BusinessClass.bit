@@ -103,7 +103,7 @@ public class <ClassName>Controller implements Controller{
          Session session = null;
          try {
             session = factory.openSession();
-            String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";//使用命名参数，推荐使用，易读。
+            String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";
             Query query=session.createQuery(hql);
             query.setString("key", key.toString());
             
@@ -162,21 +162,47 @@ public class <ClassName>Controller implements Controller{
       return output;
    }
 
-   public void deleteInSession(Session session, CommonObject obj) {
+   public void delete(Session session, CommonObject obj) {
       <ClassName> <ClassVariableName> = (<ClassName>) obj;
       session.delete(<ClassVariableName>);
    }
 
-   public void createInSession(Session session, CommonObject obj) {
+   public void create(Session session, CommonObject obj) {
       <ClassName> <ClassVariableName> = (<ClassName>) obj;
       session.save(<ClassVariableName>);
       
    }
 
-   public void updateInSession(Session session, CommonObject obj) {
+   public void update(Session session, CommonObject obj) {
+
       <ClassName> <ClassVariableName> = (<ClassName>) obj;
       session.update(<ClassVariableName>);
       
+   }
+
+   public CommonObject retrieveAccordingKey(Session session, UUID key) {
+      CommonObject output = null;
+      String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";
+      Query query=session.createQuery(hql);
+      query.setString("key", key.toString());
+      
+      List<<ClassName>> <ClassListVariableName> = query.list();
+      if (<ClassListVariableName>.size() > 0){
+         output = <ClassListVariableName>.get(0);
+      }
+      return output;
+   }
+
+   public List<CommonObject> retrieve(Session session) {
+      List<CommonObject> output = new ArrayList<CommonObject>();
+      String hql="from <FullClassName>";
+      Query query=session.createQuery(hql);
+
+      List<<ClassName>> <ClassListVariableName> = query.list();
+      for (<ClassName> <ClassVariableName> : <ClassListVariableName>) {
+         output.add(<ClassVariableName>);
+      }
+      return output;
    }
 
 }

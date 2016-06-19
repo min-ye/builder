@@ -103,7 +103,7 @@ public class BrickController implements Controller{
          Session session = null;
          try {
             session = factory.openSession();
-            String hql="from com.lia.lego.Brick as b where b.Key=:key";//使用命名参数，推荐使用，易读。
+            String hql="from com.lia.lego.Brick as b where b.Key=:key";
             Query query=session.createQuery(hql);
             query.setString("key", key.toString());
             
@@ -162,21 +162,47 @@ public class BrickController implements Controller{
       return output;
    }
 
-   public void deleteInSession(Session session, CommonObject obj) {
+   public void delete(Session session, CommonObject obj) {
       Brick brick = (Brick) obj;
       session.delete(brick);
    }
 
-   public void createInSession(Session session, CommonObject obj) {
+   public void create(Session session, CommonObject obj) {
       Brick brick = (Brick) obj;
       session.save(brick);
       
    }
 
-   public void updateInSession(Session session, CommonObject obj) {
+   public void update(Session session, CommonObject obj) {
+
       Brick brick = (Brick) obj;
       session.update(brick);
       
+   }
+
+   public CommonObject retrieveAccordingKey(Session session, UUID key) {
+      CommonObject output = null;
+      String hql="from com.lia.lego.Brick as b where b.Key=:key";
+      Query query=session.createQuery(hql);
+      query.setString("key", key.toString());
+      
+      List<Brick> brickList = query.list();
+      if (brickList.size() > 0){
+         output = brickList.get(0);
+      }
+      return output;
+   }
+
+   public List<CommonObject> retrieve(Session session) {
+      List<CommonObject> output = new ArrayList<CommonObject>();
+      String hql="from com.lia.lego.Brick";
+      Query query=session.createQuery(hql);
+
+      List<Brick> brickList = query.list();
+      for (Brick brick : brickList) {
+         output.add(brick);
+      }
+      return output;
    }
 
 }

@@ -103,7 +103,7 @@ public class CategoryController implements Controller{
          Session session = null;
          try {
             session = factory.openSession();
-            String hql="from com.lia.lego.Category as c where c.Key=:key";//使用命名参数，推荐使用，易读。
+            String hql="from com.lia.lego.Category as c where c.Key=:key";
             Query query=session.createQuery(hql);
             query.setString("key", key.toString());
             
@@ -162,21 +162,47 @@ public class CategoryController implements Controller{
       return output;
    }
 
-   public void deleteInSession(Session session, CommonObject obj) {
+   public void delete(Session session, CommonObject obj) {
       Category category = (Category) obj;
       session.delete(category);
    }
 
-   public void createInSession(Session session, CommonObject obj) {
+   public void create(Session session, CommonObject obj) {
       Category category = (Category) obj;
       session.save(category);
       
    }
 
-   public void updateInSession(Session session, CommonObject obj) {
+   public void update(Session session, CommonObject obj) {
+
       Category category = (Category) obj;
       session.update(category);
       
+   }
+
+   public CommonObject retrieveAccordingKey(Session session, UUID key) {
+      CommonObject output = null;
+      String hql="from com.lia.lego.Category as c where c.Key=:key";
+      Query query=session.createQuery(hql);
+      query.setString("key", key.toString());
+      
+      List<Category> categoryList = query.list();
+      if (categoryList.size() > 0){
+         output = categoryList.get(0);
+      }
+      return output;
+   }
+
+   public List<CommonObject> retrieve(Session session) {
+      List<CommonObject> output = new ArrayList<CommonObject>();
+      String hql="from com.lia.lego.Category";
+      Query query=session.createQuery(hql);
+
+      List<Category> categoryList = query.list();
+      for (Category category : categoryList) {
+         output.add(category);
+      }
+      return output;
    }
 
 }

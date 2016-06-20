@@ -15,194 +15,77 @@ import com.lia.lego.model.Theme;
 public class ThemeController implements Controller{
 
    public void delete(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Theme theme = (Theme) obj;
-            session.delete(theme);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Theme theme = (Theme) obj;
+         session.delete(theme);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void create(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Theme theme = (Theme) obj;
-            session.save(theme);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Theme theme = (Theme) obj;
+         session.save(theme);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void update(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Theme theme = (Theme) obj;
-            session.update(theme);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Theme theme = (Theme) obj;
+         session.update(theme);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public CommonObject retrieveAccordingKey(UUID key) {
       CommonObject output = null;
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Theme as t where t.Key=:key";
-            Query query=session.createQuery(hql);
-            query.setString("key", key.toString());
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Theme as t where t.Key=:key";
+         Query query=session.createQuery(hql);
+         query.setString("key", key.toString());
             
-            List<Theme> themeList = query.list();
-            if (themeList.size() > 0){
-               output = themeList.get(0);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         List<Theme> themeList = query.list();
+         if (themeList.size() > 0){
+            output = themeList.get(0);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
 
    public List<CommonObject> retrieve() {
       List<CommonObject> output = new ArrayList<CommonObject>();
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Theme";
-            Query query=session.createQuery(hql);
-            
-            List<Theme> themeList = query.list();
-            for (Theme theme : themeList) {
-               output.add(theme);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Theme";
+         Query query=session.createQuery(hql);
+
+         List<Theme> themeList = query.list();
+         for (Theme theme : themeList) {
+            output.add(theme);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
-
-   public void delete(Session session, CommonObject obj) {
-      Theme theme = (Theme) obj;
-      session.delete(theme);
-   }
-
-   public void create(Session session, CommonObject obj) {
-      Theme theme = (Theme) obj;
-      session.save(theme);
-      
-   }
-
-   public void update(Session session, CommonObject obj) {
-
-      Theme theme = (Theme) obj;
-      session.update(theme);
-      
-   }
-
-   public CommonObject retrieveAccordingKey(Session session, UUID key) {
-      CommonObject output = null;
-      String hql="from com.lia.lego.Theme as t where t.Key=:key";
-      Query query=session.createQuery(hql);
-      query.setString("key", key.toString());
-      
-      List<Theme> themeList = query.list();
-      if (themeList.size() > 0){
-         output = themeList.get(0);
-      }
-      return output;
-   }
-
-   public List<CommonObject> retrieve(Session session) {
-      List<CommonObject> output = new ArrayList<CommonObject>();
-      String hql="from com.lia.lego.Theme";
-      Query query=session.createQuery(hql);
-
-      List<Theme> themeList = query.list();
-      for (Theme theme : themeList) {
-         output.add(theme);
-      }
-      return output;
-   }
-
 }

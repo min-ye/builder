@@ -15,194 +15,77 @@ import com.lia.lego.model.Color;
 public class ColorController implements Controller{
 
    public void delete(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Color color = (Color) obj;
-            session.delete(color);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Color color = (Color) obj;
+         session.delete(color);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void create(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Color color = (Color) obj;
-            session.save(color);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Color color = (Color) obj;
+         session.save(color);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void update(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Color color = (Color) obj;
-            session.update(color);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Color color = (Color) obj;
+         session.update(color);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public CommonObject retrieveAccordingKey(UUID key) {
       CommonObject output = null;
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Color as c where c.Key=:key";
-            Query query=session.createQuery(hql);
-            query.setString("key", key.toString());
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Color as c where c.Key=:key";
+         Query query=session.createQuery(hql);
+         query.setString("key", key.toString());
             
-            List<Color> colorList = query.list();
-            if (colorList.size() > 0){
-               output = colorList.get(0);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         List<Color> colorList = query.list();
+         if (colorList.size() > 0){
+            output = colorList.get(0);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
 
    public List<CommonObject> retrieve() {
       List<CommonObject> output = new ArrayList<CommonObject>();
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Color";
-            Query query=session.createQuery(hql);
-            
-            List<Color> colorList = query.list();
-            for (Color color : colorList) {
-               output.add(color);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Color";
+         Query query=session.createQuery(hql);
+
+         List<Color> colorList = query.list();
+         for (Color color : colorList) {
+            output.add(color);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
-
-   public void delete(Session session, CommonObject obj) {
-      Color color = (Color) obj;
-      session.delete(color);
-   }
-
-   public void create(Session session, CommonObject obj) {
-      Color color = (Color) obj;
-      session.save(color);
-      
-   }
-
-   public void update(Session session, CommonObject obj) {
-
-      Color color = (Color) obj;
-      session.update(color);
-      
-   }
-
-   public CommonObject retrieveAccordingKey(Session session, UUID key) {
-      CommonObject output = null;
-      String hql="from com.lia.lego.Color as c where c.Key=:key";
-      Query query=session.createQuery(hql);
-      query.setString("key", key.toString());
-      
-      List<Color> colorList = query.list();
-      if (colorList.size() > 0){
-         output = colorList.get(0);
-      }
-      return output;
-   }
-
-   public List<CommonObject> retrieve(Session session) {
-      List<CommonObject> output = new ArrayList<CommonObject>();
-      String hql="from com.lia.lego.Color";
-      Query query=session.createQuery(hql);
-
-      List<Color> colorList = query.list();
-      for (Color color : colorList) {
-         output.add(color);
-      }
-      return output;
-   }
-
 }

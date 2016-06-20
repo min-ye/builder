@@ -15,194 +15,77 @@ import com.lia.lego.model.<ClassName>;
 public class <ClassName>Controller implements Controller{
 
    public void delete(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            <ClassName> <ClassVariableName> = (<ClassName>) obj;
-            session.delete(<ClassVariableName>);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         <ClassName> <ClassVariableName> = (<ClassName>) obj;
+         session.delete(<ClassVariableName>);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void create(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            <ClassName> <ClassVariableName> = (<ClassName>) obj;
-            session.save(<ClassVariableName>);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         <ClassName> <ClassVariableName> = (<ClassName>) obj;
+         session.save(<ClassVariableName>);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void update(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            <ClassName> <ClassVariableName> = (<ClassName>) obj;
-            session.update(<ClassVariableName>);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         <ClassName> <ClassVariableName> = (<ClassName>) obj;
+         session.update(<ClassVariableName>);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public CommonObject retrieveAccordingKey(UUID key) {
       CommonObject output = null;
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";
-            Query query=session.createQuery(hql);
-            query.setString("key", key.toString());
+         session = HibernateHelper.currentSession();
+         String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";
+         Query query=session.createQuery(hql);
+         query.setString("key", key.toString());
             
-            List<<ClassName>> <ClassListVariableName> = query.list();
-            if (<ClassListVariableName>.size() > 0){
-               output = <ClassListVariableName>.get(0);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         List<<ClassName>> <ClassListVariableName> = query.list();
+         if (<ClassListVariableName>.size() > 0){
+            output = <ClassListVariableName>.get(0);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
 
    public List<CommonObject> retrieve() {
       List<CommonObject> output = new ArrayList<CommonObject>();
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from <FullClassName>";
-            Query query=session.createQuery(hql);
-            
-            List<<ClassName>> <ClassListVariableName> = query.list();
-            for (<ClassName> <ClassVariableName> : <ClassListVariableName>) {
-               output.add(<ClassVariableName>);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         session = HibernateHelper.currentSession();
+         String hql="from <FullClassName>";
+         Query query=session.createQuery(hql);
+
+         List<<ClassName>> <ClassListVariableName> = query.list();
+         for (<ClassName> <ClassVariableName> : <ClassListVariableName>) {
+            output.add(<ClassVariableName>);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
-
-   public void delete(Session session, CommonObject obj) {
-      <ClassName> <ClassVariableName> = (<ClassName>) obj;
-      session.delete(<ClassVariableName>);
-   }
-
-   public void create(Session session, CommonObject obj) {
-      <ClassName> <ClassVariableName> = (<ClassName>) obj;
-      session.save(<ClassVariableName>);
-      
-   }
-
-   public void update(Session session, CommonObject obj) {
-
-      <ClassName> <ClassVariableName> = (<ClassName>) obj;
-      session.update(<ClassVariableName>);
-      
-   }
-
-   public CommonObject retrieveAccordingKey(Session session, UUID key) {
-      CommonObject output = null;
-      String hql="from <FullClassName> as <TableAlias> where <TableAlias>.Key=:key";
-      Query query=session.createQuery(hql);
-      query.setString("key", key.toString());
-      
-      List<<ClassName>> <ClassListVariableName> = query.list();
-      if (<ClassListVariableName>.size() > 0){
-         output = <ClassListVariableName>.get(0);
-      }
-      return output;
-   }
-
-   public List<CommonObject> retrieve(Session session) {
-      List<CommonObject> output = new ArrayList<CommonObject>();
-      String hql="from <FullClassName>";
-      Query query=session.createQuery(hql);
-
-      List<<ClassName>> <ClassListVariableName> = query.list();
-      for (<ClassName> <ClassVariableName> : <ClassListVariableName>) {
-         output.add(<ClassVariableName>);
-      }
-      return output;
-   }
-
 }

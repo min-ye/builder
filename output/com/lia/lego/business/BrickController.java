@@ -15,194 +15,77 @@ import com.lia.lego.model.Brick;
 public class BrickController implements Controller{
 
    public void delete(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Brick brick = (Brick) obj;
-            session.delete(brick);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Brick brick = (Brick) obj;
+         session.delete(brick);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void create(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Brick brick = (Brick) obj;
-            session.save(brick);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Brick brick = (Brick) obj;
+         session.save(brick);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public void update(CommonObject obj) {
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            Brick brick = (Brick) obj;
-            session.update(brick);
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
-         }
+         session = HibernateHelper.currentSession();
+         Brick brick = (Brick) obj;
+         session.update(brick);
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
-      
    }
 
    public CommonObject retrieveAccordingKey(UUID key) {
       CommonObject output = null;
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Brick as b where b.Key=:key";
-            Query query=session.createQuery(hql);
-            query.setString("key", key.toString());
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Brick as b where b.Key=:key";
+         Query query=session.createQuery(hql);
+         query.setString("key", key.toString());
             
-            List<Brick> brickList = query.list();
-            if (brickList.size() > 0){
-               output = brickList.get(0);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         List<Brick> brickList = query.list();
+         if (brickList.size() > 0){
+            output = brickList.get(0);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
 
    public List<CommonObject> retrieve() {
       List<CommonObject> output = new ArrayList<CommonObject>();
+      Session session = null;
       try {
-         Configuration config = new Configuration().configure();
-         SessionFactory factory = config.buildSessionFactory();
-         Session session = null;
-         try {
-            session = factory.openSession();
-            String hql="from com.lia.lego.Brick";
-            Query query=session.createQuery(hql);
-            
-            List<Brick> brickList = query.list();
-            for (Brick brick : brickList) {
-               output.add(brick);
-            }
-         }
-         catch (Exception ex) {
-            throw ex;
-         }
-         finally {
-            if (session != null) {
-               if (session.isOpen()) {
-                  session.close();
-               }
-            }
+         session = HibernateHelper.currentSession();
+         String hql="from com.lia.lego.Brick";
+         Query query=session.createQuery(hql);
+
+         List<Brick> brickList = query.list();
+         for (Brick brick : brickList) {
+            output.add(brick);
          }
       }
-      catch (Exception ex){
-         System.out.println(ex.getMessage());
+      finally {
+         HibernateHelper.closeSession();
       }
       return output;
    }
-
-   public void delete(Session session, CommonObject obj) {
-      Brick brick = (Brick) obj;
-      session.delete(brick);
-   }
-
-   public void create(Session session, CommonObject obj) {
-      Brick brick = (Brick) obj;
-      session.save(brick);
-      
-   }
-
-   public void update(Session session, CommonObject obj) {
-
-      Brick brick = (Brick) obj;
-      session.update(brick);
-      
-   }
-
-   public CommonObject retrieveAccordingKey(Session session, UUID key) {
-      CommonObject output = null;
-      String hql="from com.lia.lego.Brick as b where b.Key=:key";
-      Query query=session.createQuery(hql);
-      query.setString("key", key.toString());
-      
-      List<Brick> brickList = query.list();
-      if (brickList.size() > 0){
-         output = brickList.get(0);
-      }
-      return output;
-   }
-
-   public List<CommonObject> retrieve(Session session) {
-      List<CommonObject> output = new ArrayList<CommonObject>();
-      String hql="from com.lia.lego.Brick";
-      Query query=session.createQuery(hql);
-
-      List<Brick> brickList = query.list();
-      for (Brick brick : brickList) {
-         output.add(brick);
-      }
-      return output;
-   }
-
 }

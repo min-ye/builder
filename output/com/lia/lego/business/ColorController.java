@@ -5,86 +5,50 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import com.lia.common.CommonObject;
+import com.lia.common.HibernateHelper;
 import com.lia.lego.model.Color;
 
 public class ColorController implements Controller{
 
    public void delete(CommonObject obj) {
-      Session session = null;
-      try {
-         session = HibernateHelper.currentSession();
-         Color color = (Color) obj;
-         session.delete(color);
-      }
-      finally {
-         HibernateHelper.closeSession();
-      }
+      Color color = (Color) obj;
+      HibernateHelper.currentSession();.delete(color);
    }
 
    public void create(CommonObject obj) {
-      Session session = null;
-      try {
-         session = HibernateHelper.currentSession();
-         Color color = (Color) obj;
-         session.save(color);
-      }
-      finally {
-         HibernateHelper.closeSession();
-      }
+      Color color = (Color) obj;
+      HibernateHelper.currentSession().save(color);
    }
 
    public void update(CommonObject obj) {
-      Session session = null;
-      try {
-         session = HibernateHelper.currentSession();
-         Color color = (Color) obj;
-         session.update(color);
-      }
-      finally {
-         HibernateHelper.closeSession();
-      }
+      Color color = (Color) obj;
+      HibernateHelper.currentSession().update(color);
    }
 
    public CommonObject retrieveAccordingKey(UUID key) {
       CommonObject output = null;
-      Session session = null;
-      try {
-         session = HibernateHelper.currentSession();
-         String hql="from com.lia.lego.Color as c where c.Key=:key";
-         Query query=session.createQuery(hql);
-         query.setString("key", key.toString());
+      String hql = "from com.lia.lego.Color as c where c.Key=:key";
+      Query query = HibernateHelper.currentSession().createQuery(hql);
+      query.setString("key", key.toString());
             
-         List<Color> colorList = query.list();
-         if (colorList.size() > 0){
-            output = colorList.get(0);
-         }
-      }
-      finally {
-         HibernateHelper.closeSession();
+      List<Color> colorList = query.list();
+      if (colorList.size() > 0){
+         output = colorList.get(0);
       }
       return output;
    }
 
    public List<CommonObject> retrieve() {
       List<CommonObject> output = new ArrayList<CommonObject>();
-      Session session = null;
-      try {
-         session = HibernateHelper.currentSession();
-         String hql="from com.lia.lego.Color";
-         Query query=session.createQuery(hql);
+      String hql = "from com.lia.lego.Color";
+      Query query = HibernateHelper.currentSession().createQuery(hql);
 
-         List<Color> colorList = query.list();
-         for (Color color : colorList) {
-            output.add(color);
-         }
-      }
-      finally {
-         HibernateHelper.closeSession();
+      List<Color> colorList = query.list();
+      for (Color color : colorList) {
+         output.add(color);
       }
       return output;
    }
